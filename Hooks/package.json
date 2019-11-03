@@ -1,18 +1,19 @@
 {
-  "name": "",
+  "name": "MISTRA-Hook-Server",
   "version": "0.0.1",
-  "description": "",
+  "description": "The Hook Server component of M.I.S.T.R.A.",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
-  "license" : "SEE LICENSE IN ../LICENSE",
+  "license" : "SEE LICENSE IN LICENSE file",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/FrostTusk/CS2x.git"
+    "url" : "https://github.com/FrostTusk/MISTRA"
   },
-  "main": "app.js",
+  "main": "hooks.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node hooks.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
   }
 }

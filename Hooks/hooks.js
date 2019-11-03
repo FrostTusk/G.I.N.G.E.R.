@@ -1,15 +1,18 @@
+const logging = require('./middleware/logging.js');
+const constants = require('./constants.js')
+
+// Set up express server
 const express = require('express');
-
-
-var args = process.argv.slice(2);
-
-
-// App
 const app = express();
 app.use(express.json());
 
-console.log("loading config of: " + args[0]);
-require("./configs/" + args[0] + ".js")(app);
+// Load in configurations
+const args = process.argv.slice(2);
+for (i in args)
+  require('./configs/' + args[i] + '.js')(app);
 
-console.log("starting server");
-app.listen(7896, '0.0.0.0');
+// Start the Hook Server
+logging.myLog({message: 'starting hook server on host ' + constants.HOST +
+                        ' and port ' + constants.PORT,
+               source: 'hook'})
+app.listen(constants.PORT, constants.HOST);
