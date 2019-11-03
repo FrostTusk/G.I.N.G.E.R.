@@ -14,5 +14,5 @@ for (i in args)
 // Start the Hook Server
 logging.myLog({message: 'starting hook server on host ' + constants.HOST +
                         ' and port ' + constants.PORT,
-               source: 'hook'})
+               source: 'hooks'})
 app.listen(constants.PORT, constants.HOST);

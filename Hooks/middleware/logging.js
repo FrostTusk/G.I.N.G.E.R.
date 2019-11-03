@@ -39,8 +39,8 @@ function myLog(event) {
     entry += event.tags[event.tags.length - 1] + ']; ';
   }
 
-  if (event.source == 'hook') {
-    entry += 'source: hook server; ';
+  if (event.source == 'hooks') {
+    entry += 'source: hooks server; ';
   } else if (event.source == 'grappler') {
     entry += 'source: grappler client; ';
   } else if (event.source) {

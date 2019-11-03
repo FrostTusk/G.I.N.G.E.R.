@@ -1,7 +1,7 @@
 {
-  "name": "MISTRA-Hook-Server",
+  "name": "MISTRA-Hooks",
   "version": "0.0.1",
-  "description": "The Hook Server component of M.I.S.T.R.A.",
+  "description": "The Hooks Server component of M.I.S.T.R.A.",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
   "license" : "SEE LICENSE IN LICENSE file",
   "repository": {
