@@ -19,7 +19,12 @@ fd = open(args.config, 'r')
 json_data = json.load(fd)
 
 # Perform request
+response = None
 if (args.arm):
-    requests.post(json_data['arm']['url'], json=json_data['arm']['data'])
+    print('sending request for arm to hook server')
+    response = requests.post(json_data['arm']['url'], json=json_data['arm']['data'])
 else:
-    requests.post(json_data['disarm']['url'], json=json_data['disarm']['data'])
+    print('sending request for disarm to hook server')
+    response = requests.post(json_data['disarm']['url'], json=json_data['disarm']['data'])
+
+print('response from hook server: ' + response.text)
