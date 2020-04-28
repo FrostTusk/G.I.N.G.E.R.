@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "The Hooks Server component of M.I.S.T.R.A.",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
-  "license" : "SEE LICENSE IN LICENSE file",
+  "license": "SEE LICENSE IN LICENSE file",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/FrostTusk/MISTRA"
+    "type": "git",
+    "url": "https://github.com/FrostTusk/MISTRA"
   },
   "main": "hooks.js",
   "scripts": {
