@@ -29,6 +29,7 @@ module.exports = function (app) {
 
   app.post('/axolotl', (req, res) => {
       //context = root of Hooks
+      console.log("lasd;jkfalkjfsdkal")
       let obj = JSON.parse(fs.readFileSync('modules/axolotl/AXOLOTL.json', 'utf8'));
 
       if (req.body.secret != obj['secret']) {
