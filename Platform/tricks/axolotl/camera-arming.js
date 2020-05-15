@@ -29,11 +29,10 @@ module.exports = function (app) {
 
   app.post('/axolotl', (req, res) => {
       //context = root of Hooks
-      console.log("lasd;jkfalkjfsdkal")
       let obj = JSON.parse(fs.readFileSync('modules/axolotl/AXOLOTL.json', 'utf8'));
 
       if (req.body.secret != obj['secret']) {
-        logging.myLog({message: 'Wrong Secret', source: 'grappler'})
+        logging.myLog({message: 'Wrong Secret', source: 'command'})
         res.sendStatus(403);
         return;
       }
@@ -48,7 +47,7 @@ module.exports = function (app) {
         message = 'received request for disarming axolotl';
       }
 
-      logging.myLog({message: message, source: 'grappler'})
+      logging.myLog({message: message, source: 'command'})
       sendDataToAxolotl(config)
       res.sendStatus(200);
   })

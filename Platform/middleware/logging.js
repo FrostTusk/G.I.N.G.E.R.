@@ -39,10 +39,10 @@ function myLog(event) {
     entry += event.tags[event.tags.length - 1] + ']; ';
   }
 
-  if (event.source == 'hooks') {
-    entry += 'source: hooks server; ';
-  } else if (event.source == 'grappler') {
-    entry += 'source: grappler client; ';
+  if (event.source == 'ginger') {
+    entry += 'source: G.I.N.G.E.R; ';
+  } else if (event.source == 'command') {
+    entry += 'source: received command; ';
   } else if (event.source) {
     entry += 'source: ' + event.source + ' ';
   } else {

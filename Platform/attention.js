@@ -6,13 +6,15 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-// Load in configurations
+// Load in moods
 const args = process.argv.slice(2);
-for (i in args)
-  require('./configs/' + args[i] + '.js')(app);
+for (i in args) {
+  logging.myLog({message: "G.I.N.G.E.R. is in " + args[i] + " mood", source: "ginger"});
+  require('./moods/' + args[i] + '.js')(app);
+}
 
-// Start the Hook Server
-logging.myLog({message: 'starting hook server on host ' + constants.HOST +
+// Start paying attention
+logging.myLog({message: 'G.I.N.G.E.R. is paying attention on ' + constants.HOST +
                         ' and port ' + constants.PORT,
-               source: 'hooks'})
+               source: 'ginger'})
 app.listen(constants.PORT, constants.HOST);
