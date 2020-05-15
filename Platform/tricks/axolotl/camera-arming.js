@@ -29,7 +29,7 @@ module.exports = function (app) {
 
   app.post('/axolotl', (req, res) => {
       //context = root of Hooks
-      let obj = JSON.parse(fs.readFileSync('modules/axolotl/AXOLOTL.json', 'utf8'));
+      let obj = JSON.parse(fs.readFileSync('tricks/axolotl/AXOLOTL.json', 'utf8'));
 
       if (req.body.secret != obj['secret']) {
         logging.myLog({message: 'Wrong Secret', source: 'command'})

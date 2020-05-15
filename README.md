@@ -1,2 +1,2 @@
-# MISTRA
-My Incredibly Smart Text Recognition Assistant
+# GINGER
+Give Instruction Next Gain Exciting Result
