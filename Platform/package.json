@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Give Instruction Next Gain Exciting Result",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
-  "license" : "SEE LICENSE IN LICENSE file",
+  "license": "SEE LICENSE IN LICENSE file",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/FrostTusk/GINGER"
+    "type": "git",
+    "url": "https://github.com/FrostTusk/GINGER"
   },
   "main": "attention.js",
   "scripts": {
