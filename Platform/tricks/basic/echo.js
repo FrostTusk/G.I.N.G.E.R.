@@ -1,13 +1,34 @@
 const logging = require('../../middleware/logging.js');
 
-module.exports = function (app) {
-app.post('/echo', (req, res) => {
-    logging.myLog({message: JSON.stringify(req.body), source: 'command'});
-    res.sendStatus(200);
-});
+function echo(req, res) {
+    let requestJSON;
+    try {
+        requestJSON = JSON.stringify(req.body)
+    } catch (e) {
+        logging.myLog({source: 'command', tags: ['basic', 'echo'],
+            message: "received invalid json"})
+        res.sendStatus(400);
+        return;
+    }
+    logging.myLog({source: 'command', tags: ['basic', 'echo'],
+        message: requestJSON});
+    res.json(req.body);
+}
 
-app.get('/echo', (req, res) => {
-    logging.myLog({message: JSON.stringify(req.body), source: 'command'});
-    res.sendStatus(200);
-});
+module.exports = function (app) {
+    app.get('/echo', (req, res) => {
+        echo(req, res);
+    });  
+
+    app.post('/echo', (req, res) => {
+        echo(req, res);
+    });
+
+    app.put('/echo', (req, res) => {
+        echo(req, res);
+    });
+
+    app.delete('/echo', (req, res) => {
+        echo(req, res);
+    });
 }
