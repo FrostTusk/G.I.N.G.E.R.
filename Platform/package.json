@@ -1,6 +1,6 @@
 {
   "name": "G.I.N.G.E.R.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Give Instruction Next Gain Exciting Result",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
   "license": "SEE LICENSE IN LICENSE file",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "@senzil/cec-monitor": "^2.1.0"
   }
 }
