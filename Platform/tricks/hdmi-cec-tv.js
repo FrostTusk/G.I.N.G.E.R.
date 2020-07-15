@@ -1,4 +1,3 @@
-//import {CEC, CECMonitor} from 'cec-monitor';
 const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 const logging = require('../middleware/logging.js');
 
@@ -7,7 +6,7 @@ module.exports = function (app, tv_name='taricha') {
     let monitor = new CECMonitor("G.I.N.G.E.R.", {});
 
     monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function (packet) {
-      console.log('packet', packet.data.str);
+        console.log('packet', packet.data.str);
     });
 
     app.post('/' + tv_name + '/on', (req, res) => {
@@ -26,7 +25,7 @@ module.exports = function (app, tv_name='taricha') {
 
     app.post('/' + tv_name + '/source', (req, res) => {
 	    let new_source = req.body.new_source;
-        console.log(new_source);
+
 	    if (typeof(new_source) === 'number' && new_source >= 0 && new_source <= 9) {
 		    logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name], 
 		        message: "changed source to " + req.body.new_source});

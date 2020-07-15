@@ -9,8 +9,8 @@ app.use(express.json());
 // Load in moods
 const args = process.argv.slice(2);
 for (i in args) {
-  logging.myLog({message: "G.I.N.G.E.R. is in " + args[i] + " mood", source: "ginger"});
   require('./moods/' + args[i] + '.js')(app);
+  logging.myLog({message: "G.I.N.G.E.R. is in " + args[i] + " mood", source: "ginger"});
 }
 
 // Start paying attention
