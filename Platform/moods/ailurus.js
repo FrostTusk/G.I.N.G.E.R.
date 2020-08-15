@@ -5,7 +5,9 @@ const http = require('http');
 module.exports = function (app, constants) {
   class HA_CEC_LISTENER extends constants.CEC_LISTENER {
     sendSourceUpdate(source) {
-      return {state: source}
+      this.options.path = this.source_path;
+      let request = new http.ClientRequest(this.options);
+      return request.end(JSON.stringify({state: source}));
     }
   }
 
@@ -18,8 +20,8 @@ module.exports = function (app, constants) {
 	          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkNDE5ZmFhODk3MzQ0NjViODMxZWRhMmRhYWEwYjc3NCIsImlhdCI6MTU5NzQxMTgzOSwiZXhwIjoxOTEyNzcxODM5fQ.r1LwULDi8gQ3b7jSNXITqrA7b1mJveOkJHPhFpzuQVU",
 	          "content-type": "application/json"
 	  },
-    '/api/states/input_boolean.taricha', {state: 'on'},
-    '/api/states/input_boolean.taricha', {state: 'off'},
+    '/api/states/input_boolean.taricha', JSON.stringify({state: 'on'}),
+    '/api/states/input_boolean.taricha', JSON.stringify({state: 'off'}),
     '/api/states/input_select.taricha')]);
 }
 

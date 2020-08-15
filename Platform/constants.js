@@ -6,7 +6,7 @@ module.exports.PORT = PORT;
 
 const http = require('http');
 class CEC_LISTENER {
-    constructor(hostname, port, headers, on_path, on_body, off_path, off_body, source_path, source_body) {
+    constructor(hostname, port, headers, on_path, on_body, off_path, off_body, source_path) {
         this.options = {
 	      hostname: hostname,
 	      port: port,
@@ -14,9 +14,10 @@ class CEC_LISTENER {
 	      headers: headers
 	    }        
         this.on_path = on_path;
+        this.on_body = on_body;
         this.off_path = off_path;
+        this.off_body = off_body;
         this.source_path = source_path;
-        this.source_body = source_body;
     }
 
     sendOnUpdate() {
@@ -31,11 +32,11 @@ class CEC_LISTENER {
       request.end(this.off_body);
     }
     
-    sendSourceUpdate(source) {
+    /*sendSourceUpdate(source) {
       this.options.path = this.source_path;
       let request = new http.ClientRequest(this.options);
       request.end(this.source_body);
-    }
+    }*/
 };
 module.exports.CEC_LISTENER = CEC_LISTENER;
 

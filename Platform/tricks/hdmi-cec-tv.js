@@ -9,17 +9,27 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
     });
   }
 
+  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
+    console.log(packet.data.str)
+    if (packet.data.str === "ON") {
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "REPORT_POWER_STATUS, TV IS ONLINE"});
+      for (let i in listeners) {
+        listeners[i].sendOnUpdate();
+      };
+    } else {
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "REPORT_POWER_STATUS, TV IS OFFLINE"});
+      for (let i in listeners) {
+        listeners[i].sendOffUpdate();
+        listeners[i].sendSourceUpdate(0);
+      };
+    }
+  });
+
   monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, function(packet) {
     logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
       message: "IMAGE_VIEW_ON, TV IS ONLINE"});
-    for (let i in listeners) {
-      listeners[i].sendOnUpdate();
-    };
-  });
-
-  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
-    logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
-      message: "REPORT_POWER_STATUS, TV IS ONLINE"});
     for (let i in listeners) {
       listeners[i].sendOnUpdate();
     };
@@ -30,6 +40,7 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
       message: "STANDBY, TV IS OFFLINE"});
     for (let i in listeners) {
       listeners[i].sendOffUpdate();
+      listeners[i].sendSourceUpdate(0);
     };
   });
 
@@ -68,6 +79,7 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
       res.sendStatus(200);
       for (let i in listeners) {
         listeners[i].sendOffUpdate();
+        listeners[i].sendSourceUpdate(0);
       };
   });
 
@@ -81,7 +93,7 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
         for (let i in listeners) {
           listeners[i].sendSourceUpdate(new_source);
         };
-       } else {
+      } else {
         logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name],
         message: 'incorrect source'});
         res.sendStatus(400);
