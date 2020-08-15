@@ -44,7 +44,7 @@ function myLog(event) {
   } else if (event.source == 'command') {
     entry += 'source: received command; ';
   } else if (event.source) {
-    entry += 'source: ' + event.source + ' ';
+    entry += 'source: ' + event.source + '; ';
   } else {
     entry += 'source: unknown source; ';
   }

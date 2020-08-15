@@ -16,36 +16,52 @@ function craftHTTPRequest(uriPath, body) {
 	  request.end(body);
 }
 
+module.exports = function (app, tv_name, monitor, listeners) {
+    /// --- CEC-Monitor Listeners ---
 
-module.exports = function (app, tv_name='taricha') {
-    //define listeners for cec on/off monitor.
-    let monitor = new CECMonitor("G.I.N.G.E.R.", {});
+    // --- TODO: Add debug toggle
     monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
-        console.log(packet);
+        //console.log(packet);
     });
 
     monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, function(packet) {
-      console.log(packet);
-      let body = JSON.stringify({state: "on"});
-      craftHTTPRequest('/api/states/input_boolean.taricha', body);
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "IMAGE_VIEW_ON, TV IS ONLINE"});
+      for (let i in listeners) {
+        listeners[i].sendOnUpdate();
+      };
     });
 
     monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
-      console.log(packet);
-      let body = JSON.stringify({state: "on"});
-      craftHTTPRequest('/api/states/input_boolean.taricha', body);
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "REPORT_POWER_STATUS, TV IS ONLINE"});
+      for (let i in listeners) {
+        listeners[i].sendOnUpdate();
+      };
     });
 
     monitor.on(CECMonitor.EVENTS.STANDBY, function(packet) {
-       console.log(packet);
-       let body = JSON.stringify({state: "off"});
-       craftHTTPRequest('/api/states/input_boolean.taricha', body);
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "STANDBY, TV IS OFFLINE"});
+      for (let i in listeners) {
+        listeners[i].sendOffUpdate();
+      };
     });
 
     monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, function(packet) {
-      console.log(packet);
-      let body = JSON.stringify({state: packet.data.str[0]});
-      craftHTTPRequest('/api/states/input_select.taricha', body);
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "ACTIVE_SOURCE, TV IS ON SHOWING SOURCE" + packet.data.str[0]});
+      for (let i in listeners) {
+        listeners[i].sendSourceUpdate(packet.data.str[0]);
+      };
+    });
+
+    monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, function(packet) {
+      logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
+        message: "REPORT_PHYSICAL_ADDRESS, TV IS ON SHOWING SOURCE" + packet.data.str[0]});
+      for (let i in listeners) {
+        listeners[i].sendSourceUpdate(packet.data.str[0]);
+      };
     });
 
     app.post('/' + tv_name + '/on', (req, res) => {

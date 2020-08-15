@@ -9,7 +9,7 @@ app.use(express.json());
 // Load in moods
 const args = process.argv.slice(2);
 for (i in args) {
-  require('./moods/' + args[i] + '.js')(app);
+  require('./moods/' + args[i] + '.js')(app, constants);
   logging.myLog({message: "G.I.N.G.E.R. is in " + args[i] + " mood", source: "ginger"});
 }
 
@@ -18,3 +18,4 @@ logging.myLog({message: 'G.I.N.G.E.R. is paying attention on ' + constants.HOST 
                         ' and port ' + constants.PORT,
                source: 'ginger'})
 app.listen(constants.PORT, constants.HOST);
+
