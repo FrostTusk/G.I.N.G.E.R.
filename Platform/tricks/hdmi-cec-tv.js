@@ -50,7 +50,7 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
     for (let i in listeners) {
       listeners[i].sendSourceUpdate(packet.data.str[0]);
     };
-  });
+  });https://www.wired.com/2015/07/hackers-remotely-kill-jeep-highway/
 
   monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, function(packet) {
     logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name], 
@@ -73,31 +73,31 @@ module.exports = function (app, tv_name, monitor, listeners, debug) {
   });
 
   app.post('/' + tv_name + '/off', (req, res) => {
-      logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name], 
-          message: "turned off"});
-      monitor.WriteRawMessage('tx 40:36');
-      res.sendStatus(200);
-      for (let i in listeners) {
-        listeners[i].sendOffUpdate();
-        listeners[i].sendSourceUpdate(0);
-      };
+    logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name], 
+        message: "turned off"});
+    monitor.WriteRawMessage('tx 40:36');
+    res.sendStatus(200);
+    for (let i in listeners) {
+      listeners[i].sendOffUpdate();
+      listeners[i].sendSourceUpdate(0);
+    };
   });
 
   app.post('/' + tv_name + '/source', (req, res) => {
     let new_source = req.body.new_source;
-      if (typeof(new_source) === 'number' && new_source >= 0 && new_source <= 9) {
-        logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name], 
-          message: "changed source to " + req.body.new_source});
-        monitor.WriteRawMessage('tx 4F:82:' + new_source + '0:00');
-        res.sendStatus(200);
-        for (let i in listeners) {
-          listeners[i].sendSourceUpdate(new_source);
-        };
-      } else {
-        logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name],
-        message: 'incorrect source'});
-        res.sendStatus(400);
-      }
+    if (typeof(new_source) === 'number' && new_source >= 0 && new_source <= 9) {
+      logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name], 
+        message: "changed source to " + req.body.new_source});
+      monitor.WriteRawMessage('tx 4F:82:' + new_source + '0:00');
+      res.sendStatus(200);
+      for (let i in listeners) {
+        listeners[i].sendSourceUpdate(new_source);
+      };
+    } else {
+      logging.myLog({source: 'command', tags: ['hdmi-cec-tv', tv_name],
+      message: 'incorrect source'});
+      res.sendStatus(400);
+    }
  });
 }
 
