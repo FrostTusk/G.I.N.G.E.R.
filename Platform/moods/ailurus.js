@@ -23,5 +23,6 @@ module.exports = function (app, constants) {
     '/api/states/input_boolean.taricha', JSON.stringify({state: 'on'}),
     '/api/states/input_boolean.taricha', JSON.stringify({state: 'off'}),
     '/api/states/input_select.taricha')]);
-}
 
+    // new hdmi-cec-trick(tv-name, input_channel, output_channel)
+}
