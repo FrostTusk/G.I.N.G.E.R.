@@ -9,14 +9,17 @@ let options = {
 }
 
 inputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
-  return req.body;
+  let source = req.body.source;
+  if (typeof(source) === 'number' && source >= 0 && source <= 9) {
+    return source;
+  }
+   throw "THAT WAS A BAD NUMBER";
 });
-// inputTunnel.on((data) => {
-//   console.log(data);
-// });
+
+testTrick("taricha", undefined, [], [], [inputTunnel], [], [], [])
 
 options.headers = {"content-type": "application/json"};
 outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
-  return JSON.stringify({state: data});
+  return JSON.stringify({source: data});
 });
 outputTunnel.emit(1);

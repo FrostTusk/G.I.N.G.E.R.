@@ -7,39 +7,61 @@ module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
 
+  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
+    if (packet.data.str === "ON") {
+      for (let i in onListenerTunnels)
+        onListenerTunnels[i].emit();
+    } else {
+      for (let i in offListenerTunnels)
+        offListenerTunnels[i].emit();
+      for (let i in sourceListenerTunnels)
+        sourceListenerTunnels[i].emit(0);
+    }
+  });
+
+  monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, function(packet) {
+    for (let i in onListenerTunnels)
+      onListenerTunnels[i].emit();
+  });
+
+  monitor.on(CECMonitor.EVENTS.STANDBY, function(packet) {
+    for (let i in onListenerTunnels)
+      onListenerTunnels[i].emit();
+    for (let i in sourceListenerTunnels)
+      sourceListenerTunnels[i].emit(0);
+  });
+
+  monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, function(packet) {
+    for (let i in onListenerTunnels)
+      onListenerTunnels[i].emit();
+  });
+
+  monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, function(packet) {
+    for (let i in sourceListenerTunnels)
+      sourceListenerTunnels[i].emit(packet.data.str[0]);
+  });
+
   for (t in turnOnInputTunnels) {
     turnOnInputTunnels[t].on(() => {
-      //monitor.WriteRawMessage('tx 40:04');
-      for (tunnel in onListenerTunnels)
-        onListenerTunnels(tunnel).emit()
+      monitor.WriteRawMessage('tx 40:04');
+      for (tunnel in stateOnListenerOutputTunnels)
+        stateOnListenerOutputTunnels(tunnel).emit()
+    });
+  }
+
+  for (t in turnOffInputTunnels) {
+    turnOffInputTunnels[t].on(() => {
+      monitor.WriteRawMessage('tx 40:36');
+      for (tunnel in stateOnListenerOutputTunnels)
+        stateOffListenerOutputTunnels(tunnel).emit()
     });
   }
 
   for (t in switchSourceInputTunnels) {
-    turnOnInputTunnels[t].on((data) => {
-      data.source;
-      //monitor.WriteRawMessage('tx 40:04');
-      for (tunnel in onListenerTunnels)
-        onListenerTunnels(tunnel).emit()
+    switchSourceInputTunnels[t].on((source) => {
+      monitor.WriteRawMessage('tx 4F:82:' + source + '0:00');
+      for (tunnel in stateOnListenerOutputTunnels)
+        switchSourceListenerOutputTunnels(tunnel).emit(source)
     });
   }
-  // monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
-  //   if (packet.data.str === "ON") {
-  //     // Logging obstacle
-  //     // logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name],
-  //     //   message: "REPORT_POWER_STATUS, TV IS ONLINE"});
-  //     // All outputchannels
-  //     for (let i in onListenerTunnels) {
-  //       onListenerTunnels[i].emit();
-  //     };
-  //   } else {
-  //     // Logging
-  //     // logging.myLog({source: 'cec-client monitor', tags: ['hdmi-cec-tv', tv_name],
-  //     //   message: "REPORT_POWER_STATUS, TV IS OFFLINE"});
-  //     for (let i in listeners) {
-  //       offListenerTunnels[i].emit();
-  //       sourceListenerTunnels[i].emit(0);
-  //     };
-  //   }
-  // });
 }

@@ -1,10 +1,24 @@
 const HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
 const HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
+const HDMICECTVTrick = require('../tricks/testTrick.js');
 
+const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 
 module.exports = class Ginger {
   constructor() {
     this.tunnels = [];
+  }
+
+  createHDMICECTVTrick(tv_name,
+    turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
+    stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
+
+    //let monitor = new CECMonitor("G.I.N.G.E.R.", {});
+    let monitor;
+    HDMICECTVTrick(tv_name, monitor,
+      turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
+      stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels
+    )
   }
 
   // Load in create tunnel methods
