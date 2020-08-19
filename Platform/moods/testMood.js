@@ -1,6 +1,22 @@
-options; //defined up front
-function dataCB(data) {
-  return JSON.stringify({state: data});
+const Ginger = require('../core/ginger.js');
+let ginger = new Ginger();
+
+let options = {
+  hostname: "localhost",
+  port: 7896,
+  method: "POST",
+  path: "/echo",
 }
 
-sourceOutput = new HTTPOutputTunnel(options, dataCB)
+inputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
+  return req.body;
+});
+// inputTunnel.on((data) => {
+//   console.log(data);
+// });
+
+options.headers = {"content-type": "application/json"};
+outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
+  return JSON.stringify({state: data});
+});
+outputTunnel.emit(1);
