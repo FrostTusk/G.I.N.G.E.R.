@@ -13,8 +13,7 @@ module.exports = class Ginger {
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
 
-    //let monitor = new CECMonitor("G.I.N.G.E.R.", {});
-    let monitor;
+    let monitor = new CECMonitor("G.I.N.G.E.R.", {});
     HDMICECTVTrick(tv_name, monitor,
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
       stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels
