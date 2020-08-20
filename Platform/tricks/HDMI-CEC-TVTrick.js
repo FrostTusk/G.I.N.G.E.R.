@@ -50,7 +50,9 @@ module.exports = function (tv_name, monitor,
 
   for (t in turnOnInputTunnels) {
     turnOnInputTunnels[t].on(() => {
-      monitor.WriteRawMessage('tx 40:04');
+      try {
+        monitor.WriteRawMessage('tx 40:04');
+      } catch (promiseRejection) {}
       for (tunnel in onListenerTunnels)
         onListenerTunnels[tunnel].emit()
     });
@@ -58,7 +60,9 @@ module.exports = function (tv_name, monitor,
 
   for (t in turnOffInputTunnels) {
     turnOffInputTunnels[t].on(() => {
-      monitor.WriteRawMessage('tx 40:36');
+      try {
+        monitor.WriteRawMessage('tx 40:36');
+      } catch (promiseRejection) {}
       for (tunnel in offListenerTunnels)
         offListenerTunnels[tunnel].emit()
     });
@@ -66,7 +70,9 @@ module.exports = function (tv_name, monitor,
 
   for (t in switchSourceInputTunnels) {
     switchSourceInputTunnels[t].on((source) => {
-      monitor.WriteRawMessage('tx 4F:82:' + source + '0:00');
+      try {
+        monitor.WriteRawMessage('tx 4F:82:' + source + '0:00');
+      } catch (promiseRejection) {}
       for (tunnel in onListenerTunnels)
         sourceListenerTunnels[tunnel].emit(source)
     });

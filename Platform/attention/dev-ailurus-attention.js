@@ -19,9 +19,10 @@ let offInputTunnel = ginger.createHTTPInputTunnel(
 let sourceInputTunnel = ginger.createHTTPInputTunnel(
   Object.assign({path: '/' + tv_name + '/source'}, inputOptions),
   (req, res) => {
+    let source = req.body.new_source;
     if (typeof(source) === 'number' && source >= 0 && source <= 9)
       return source;
-     throw "invalid source";
+    throw "invalid source";
 });
 
 
