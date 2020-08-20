@@ -52,21 +52,21 @@ let outputOptions = {
 }
 
 let onOutputTunnel = ginger.createHTTPOutputTunnel(
-  Object.assign(outputOptions, {path: '/api/states/input_boolean.' + tv_name}),
+  Object.assign({path: '/api/states/input_boolean.' + tv_name}, outputOptions),
   (data) => {
     console.log("in on output tunnel");
     return JSON.stringify({state: 'on'});
   });
 
-let offOutputTunnel = ginger.createHTTPOutputTunnel(options4,
-  Object.assign(outputOptions, {path: '/api/states/input_boolean.' + tv_name}),
+let offOutputTunnel = ginger.createHTTPOutputTunnel(
+  Object.assign({path: '/api/states/input_boolean.' + tv_name}, outputOptions),
   (data) => {
     console.log("in off output tunnel");
     return JSON.stringify({state: 'off'});
 });
 
 let sourceOutputTunnel = ginger.createHTTPOutputTunnel(
-  Object.assign(outputOptions, {path: '/api/states/input_select.' + tv_name}),
+  Object.assign({path: '/api/states/input_select.' + tv_name}, outputOptions),
   (data) => {
     return JSON.stringify({state: data});
 });
