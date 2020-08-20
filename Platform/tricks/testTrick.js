@@ -1,3 +1,4 @@
+const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 /*
  * Tunnels
  * outputTunnelOn : emit will be called without data
@@ -5,7 +6,7 @@
  */
 module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
-  stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
+  onListenerTunnels, offListenerTunnels, sourceListenerTunnels) {
 
   monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
     if (packet.data.str === "ON") {

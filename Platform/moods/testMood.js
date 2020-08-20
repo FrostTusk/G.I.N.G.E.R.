@@ -6,7 +6,7 @@ let options = {
   hostname: 'localhost',
   port: 7896,
   method: 'POST',
-  path: '/' + tv_name + ''/on',
+  path: '/' + tv_name + '/on',
 }
 let onInputTunnel = ginger.createHTTPInputTunnel(options)
 
@@ -16,6 +16,7 @@ let offInputTunnel = ginger.createHTTPInputTunnel(options)
 options.path = '/' + tv_name + '/source';
 sourceInputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
   let source = req.body.source;
+  console.log('in source');
   if (typeof(source) === 'number' && source >= 0 && source <= 9) {
     return source;
   }
@@ -23,7 +24,7 @@ sourceInputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
 });
 
 
-let options = {
+options = {
   hostname: '192.168.222.164',
   port: 8123,
   method: 'POST',
