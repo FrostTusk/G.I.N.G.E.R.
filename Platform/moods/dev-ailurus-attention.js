@@ -2,42 +2,26 @@ const Ginger = require('../core/ginger.js');
 let ginger = new Ginger();
 const tv_name = 'taricha';
 
-let options = {
+let inputOptions = {
   hostname: '0.0.0.0',
   port: 7896,
   method: 'POST',
-  path: '/' + tv_name + '/on',
 }
-let onInputTunnel = ginger.createHTTPInputTunnel(options)
 
-options.headers = {"content-type": "application/json"};
-let outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
-   return JSON.stringify({source: data});
-});
+let onInputTunnel = ginger.createHTTPInputTunnel(
+  Object.assign({path: '/' + tv_name + '/on'}, inputOptions)
+);
 
-newoptions1 = {
-  hostname: '0.0.0.0',
-  port: 7896,
-  method: 'POST',
-  path: '/' + tv_name + '/on',
-}
-newoptions1.path = '/' + tv_name + '/off';
-let offInputTunnel = ginger.createHTTPInputTunnel(newoptions1)
+let offInputTunnel = ginger.createHTTPInputTunnel(
+  Object.assign({path: '/' + tv_name + '/off'}, inputOptions)
+);
 
-newoptions2 = {
-  hostname: '0.0.0.0',
-  port: 7896,
-  method: 'POST',
-  path: '/' + tv_name + '/on',
-}
-newoptions2.path = '/' + tv_name + '/source';
-let sourceInputTunnel = ginger.createHTTPInputTunnel(newoptions2, (req, res) => {
-  let source = req.body.new_source;
-  console.log(source);
-  if (typeof(source) === 'number' && source >= 0 && source <= 9) {
-    return source;
-  }
-   throw "THAT WAS A BAD NUMBER";
+let sourceInputTunnel = ginger.createHTTPInputTunnel(
+  Object.assign({path: '/' + tv_name + '/source'}, inputOptions),
+  (req, res) => {
+    if (typeof(source) === 'number' && source >= 0 && source <= 9)
+      return source;
+     throw "invalid source";
 });
 
 
@@ -54,14 +38,12 @@ let outputOptions = {
 let onOutputTunnel = ginger.createHTTPOutputTunnel(
   Object.assign({path: '/api/states/input_boolean.' + tv_name}, outputOptions),
   (data) => {
-    console.log("in on output tunnel");
     return JSON.stringify({state: 'on'});
   });
 
 let offOutputTunnel = ginger.createHTTPOutputTunnel(
   Object.assign({path: '/api/states/input_boolean.' + tv_name}, outputOptions),
   (data) => {
-    console.log("in off output tunnel");
     return JSON.stringify({state: 'off'});
 });
 
@@ -75,8 +57,3 @@ let sourceOutputTunnel = ginger.createHTTPOutputTunnel(
 ginger.createHDMICECTVTrick(tv_name,
   [onInputTunnel], [offInputTunnel], [sourceInputTunnel],
   [onOutputTunnel], [offOutputTunnel], [sourceOutputTunnel])
-
-//
-
-//setTimeout(function(){}, 2000);
-//outputTunnel.emit(1);

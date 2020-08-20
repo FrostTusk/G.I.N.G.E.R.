@@ -8,7 +8,7 @@ module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   onListenerTunnels, offListenerTunnels, sourceListenerTunnels) {
 
-  if (true) {
+  if (false) {
       monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
       console.log(JSON.stringify(packet));
     });
@@ -19,7 +19,6 @@ module.exports = function (tv_name, monitor,
       for (let i in onListenerTunnels)
         onListenerTunnels[i].emit();
     } else {
-      console.log("right place");
       for (let i in offListenerTunnels)
         offListenerTunnels[i].emit();
       for (let i in sourceListenerTunnels)
@@ -51,7 +50,6 @@ module.exports = function (tv_name, monitor,
 
   for (t in turnOnInputTunnels) {
     turnOnInputTunnels[t].on(() => {
-      console.log("entered turn on input tunnel");
       monitor.WriteRawMessage('tx 40:04');
       for (tunnel in onListenerTunnels)
         onListenerTunnels[tunnel].emit()
@@ -60,7 +58,6 @@ module.exports = function (tv_name, monitor,
 
   for (t in turnOffInputTunnels) {
     turnOffInputTunnels[t].on(() => {
-      console.log("entered turn off input tunnel");
       monitor.WriteRawMessage('tx 40:36');
       for (tunnel in offListenerTunnels)
         offListenerTunnels[tunnel].emit()
@@ -69,7 +66,6 @@ module.exports = function (tv_name, monitor,
 
   for (t in switchSourceInputTunnels) {
     switchSourceInputTunnels[t].on((source) => {
-      console.log("entered source input tunnel");
       monitor.WriteRawMessage('tx 4F:82:' + source + '0:00');
       for (tunnel in onListenerTunnels)
         sourceListenerTunnels[tunnel].emit(source)
