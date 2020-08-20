@@ -30,7 +30,7 @@ options = {
   method: 'POST',
   path: '/api/states/input_boolean.' + tv_name,
   headers: {
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkNDE5ZmFhODk3MzQ0NjViODMxZWRhMmRhYWEwYjc3NCIsImlhdCI6MTU5NzQxMTgzOSwiZXhwIjoxOTEyNzcxODM5fQ.r1LwULDi8gQ3b7jSNXITqrA7b1mJveOkJHPhFpzuQVU",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZDVkMDFlYmI0OWE0ODM2YjY1MmJiNTM1NDE2ZTZjYSIsImlhdCI6MTU5NzkzNzM5NywiZXhwIjoxOTEzMjk3Mzk3fQ.G9vlDfhFMcxzU0WRloi35TW9rYRIq2aXsfh12mMEBso",
     "content-type": "application/json"
   }
 }
@@ -44,7 +44,7 @@ let offOutputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
 
 options.path = '/api/states/input_select.' + tv_name
 let sourceOutputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
-  return JSON.stringify({source: data});
+  return JSON.stringify({state: data});
 });
 
 
