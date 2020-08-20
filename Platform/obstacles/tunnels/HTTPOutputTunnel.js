@@ -18,6 +18,7 @@ module.exports = class HTTPOutputTunnel extends OutputTunnel {
     if (this._authenticationHurdle)
       this._authenticationHurdle.guard(this._authMood(data));
     let request = new http.ClientRequest(this._options);
+    console.log("sending data");
     request.end(this._outputMood(data));
   }
 };

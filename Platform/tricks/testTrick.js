@@ -8,8 +8,8 @@ module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   onListenerTunnels, offListenerTunnels, sourceListenerTunnels) {
 
-  if (false) {
-    monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
+  if (true) {
+      monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
       console.log(JSON.stringify(packet));
     });
   }
@@ -19,6 +19,7 @@ module.exports = function (tv_name, monitor,
       for (let i in onListenerTunnels)
         onListenerTunnels[i].emit();
     } else {
+      console.log("right place");
       for (let i in offListenerTunnels)
         offListenerTunnels[i].emit();
       for (let i in sourceListenerTunnels)
@@ -32,8 +33,8 @@ module.exports = function (tv_name, monitor,
   });
 
   monitor.on(CECMonitor.EVENTS.STANDBY, function(packet) {
-    for (let i in onListenerTunnels)
-      onListenerTunnels[i].emit();
+    for (let i in offListenerTunnels)
+      offListenerTunnels[i].emit();
     for (let i in sourceListenerTunnels)
       sourceListenerTunnels[i].emit(0);
   });

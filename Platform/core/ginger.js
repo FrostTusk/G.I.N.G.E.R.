@@ -33,8 +33,8 @@ module.exports = class Ginger {
     let tunnel = new HTTPInputTunnel(this._httpServer, options, inputMood,
       authenticationHurdle, authMood);
     this.tunnels.push(tunnel);
-    console.log(this.tunnels);
-    console.log(this._httpServer._router.stack);
+//    console.log(this.tunnels);
+//    console.log(this._httpServer._router.stack);
     return tunnel;
   }
 
