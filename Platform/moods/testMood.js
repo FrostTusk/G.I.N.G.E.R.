@@ -10,11 +10,17 @@ let options = {
 }
 let onInputTunnel = ginger.createHTTPInputTunnel(options)
 
+options.headers = {"content-type": "application/json"};
+let outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
+   return JSON.stringify({source: data});
+});
+
+
 options.path = '/' + tv_name + '/off';
 let offInputTunnel = ginger.createHTTPInputTunnel(options)
 
 options.path = '/' + tv_name + '/source';
-sourceInputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
+let sourceInputTunnel = ginger.createHTTPInputTunnel(options, (req, res) => {
   let source = req.body.source;
   console.log('in source');
   if (typeof(source) === 'number' && source >= 0 && source <= 9) {
@@ -52,8 +58,7 @@ ginger.createHDMICECTVTrick(tv_name,
   [onInputTunnel], [offInputTunnel], [sourceInputTunnel],
   [onOutputTunnel], [offOutputTunnel], [sourceOutputTunnel])
 
-// options.headers = {"content-type": "application/json"};
-// outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
-//   return JSON.stringify({source: data});
-// });
-// outputTunnel.emit(1);
+//
+
+setTimeout(function(){}, 2000);
+outputTunnel.emit(1);
