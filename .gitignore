@@ -1,6 +1,8 @@
 node_modules/
 npm-debug.log
 
-staurois.json
 Platform/logs
-Platform/moods/ailurus.js
+Platform/attention/custom
+
+# Backwards Compatibility
+Platform/tricks/staurois
