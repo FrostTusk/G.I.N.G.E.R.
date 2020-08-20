@@ -32,8 +32,8 @@ newoptions2 = {
 }
 newoptions2.path = '/' + tv_name + '/source';
 let sourceInputTunnel = ginger.createHTTPInputTunnel(newoptions2, (req, res) => {
-  let source = req.body.source;
-  console.log('in source');
+  let source = req.body.new_source;
+  console.log(source);
   if (typeof(source) === 'number' && source >= 0 && source <= 9) {
     return source;
   }
