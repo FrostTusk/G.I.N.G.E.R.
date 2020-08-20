@@ -41,48 +41,34 @@ let sourceInputTunnel = ginger.createHTTPInputTunnel(newoptions2, (req, res) => 
 });
 
 
-let options3 = {
+let outputOptions = {
   hostname: '192.168.222.164',
   port: 8123,
   method: 'POST',
-  path: '/api/states/input_boolean.' + tv_name,
   headers: {
     "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZDVkMDFlYmI0OWE0ODM2YjY1MmJiNTM1NDE2ZTZjYSIsImlhdCI6MTU5NzkzNzM5NywiZXhwIjoxOTEzMjk3Mzk3fQ.G9vlDfhFMcxzU0WRloi35TW9rYRIq2aXsfh12mMEBso",
     "content-type": "application/json"
   }
 }
-let onOutputTunnel = ginger.createHTTPOutputTunnel(options3, (data) => {
-  console.log("in on output tunnel");
-  return JSON.stringify({state: 'on'});
+
+let onOutputTunnel = ginger.createHTTPOutputTunnel(
+  Object.assign(outputOptions, {path: '/api/states/input_boolean.' + tv_name}),
+  (data) => {
+    console.log("in on output tunnel");
+    return JSON.stringify({state: 'on'});
+  });
+
+let offOutputTunnel = ginger.createHTTPOutputTunnel(options4,
+  Object.assign(outputOptions, {path: '/api/states/input_boolean.' + tv_name}),
+  (data) => {
+    console.log("in off output tunnel");
+    return JSON.stringify({state: 'off'});
 });
 
-let options4 = {
-  hostname: '192.168.222.164',
-  port: 8123,
-  method: 'POST',
-  path: '/api/states/input_boolean.' + tv_name,
-  headers: {
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZDVkMDFlYmI0OWE0ODM2YjY1MmJiNTM1NDE2ZTZjYSIsImlhdCI6MTU5NzkzNzM5NywiZXhwIjoxOTEzMjk3Mzk3fQ.G9vlDfhFMcxzU0WRloi35TW9rYRIq2aXsfh12mMEBso",
-    "content-type": "application/json"
-  }
-}
-let offOutputTunnel = ginger.createHTTPOutputTunnel(options4, (data) => {
-  console.log("in off output tunnel");
-  return JSON.stringify({state: 'off'});
-});
-
-let options5 = {
-  hostname: '192.168.222.164',
-  port: 8123,
-  method: 'POST',
-  path: '/api/states/input_select.' + tv_name,
-  headers: {
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyZDVkMDFlYmI0OWE0ODM2YjY1MmJiNTM1NDE2ZTZjYSIsImlhdCI6MTU5NzkzNzM5NywiZXhwIjoxOTEzMjk3Mzk3fQ.G9vlDfhFMcxzU0WRloi35TW9rYRIq2aXsfh12mMEBso",
-    "content-type": "application/json"
-  }
-}
-let sourceOutputTunnel = ginger.createHTTPOutputTunnel(options5, (data) => {
-  return JSON.stringify({state: data});
+let sourceOutputTunnel = ginger.createHTTPOutputTunnel(
+  Object.assign(outputOptions, {path: '/api/states/input_select.' + tv_name}),
+  (data) => {
+    return JSON.stringify({state: data});
 });
 
 
