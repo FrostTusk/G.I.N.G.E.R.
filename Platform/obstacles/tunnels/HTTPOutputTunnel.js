@@ -4,7 +4,7 @@ const OutputTunnel = require('./OutputTunnel.js');
 module.exports = class HTTPOutputTunnel extends OutputTunnel {
   constructor(options, outputMood, authenticationHurdle, authMood) {
     super(options, outputMood, authenticationHurdle);
-    this._options = options;
+    this._options = Object.assign(options);
     this._outputMood = outputMood;
     this._authenticationHurdle = authenticationHurdle;
     if (!authMood) {
