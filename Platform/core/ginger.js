@@ -34,6 +34,7 @@ module.exports = class Ginger {
       authenticationHurdle, authMood);
     this.tunnels.push(tunnel);
     console.log(this.tunnels);
+    console.log(this._httpServer._router.stack);
     return tunnel;
   }
 
