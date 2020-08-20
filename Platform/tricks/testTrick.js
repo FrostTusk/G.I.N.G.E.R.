@@ -8,6 +8,12 @@ module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   onListenerTunnels, offListenerTunnels, sourceListenerTunnels) {
 
+  if (true) {
+    monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
+      console.log(JSON.stringify(packet));
+    });
+  }
+
   monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
     if (packet.data.str === "ON") {
       for (let i in onListenerTunnels)
