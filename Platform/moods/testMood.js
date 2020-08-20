@@ -3,7 +3,7 @@ let ginger = new Ginger();
 const tv_name = 'taricha';
 
 let options = {
-  hostname: 'localhost',
+  hostname: '0.0.0.0',
   port: 7896,
   method: 'POST',
   path: '/' + tv_name + '/on',
@@ -16,7 +16,7 @@ let outputTunnel = ginger.createHTTPOutputTunnel(options, (data) => {
 });
 
 newoptions1 = {
-  hostname: 'localhost',
+  hostname: '0.0.0.0',
   port: 7896,
   method: 'POST',
   path: '/' + tv_name + '/on',
@@ -25,7 +25,7 @@ newoptions1.path = '/' + tv_name + '/off';
 let offInputTunnel = ginger.createHTTPInputTunnel(newoptions1)
 
 newoptions2 = {
-  hostname: 'localhost',
+  hostname: '0.0.0.0',
   port: 7896,
   method: 'POST',
   path: '/' + tv_name + '/on',
@@ -71,5 +71,5 @@ ginger.createHDMICECTVTrick(tv_name,
 
 //
 
-setTimeout(function(){}, 2000);
-outputTunnel.emit(1);
+//setTimeout(function(){}, 2000);
+//outputTunnel.emit(1);

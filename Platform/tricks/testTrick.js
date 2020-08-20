@@ -52,8 +52,8 @@ module.exports = function (tv_name, monitor,
     turnOnInputTunnels[t].on(() => {
       console.log("entered turn on input tunnel");
       monitor.WriteRawMessage('tx 40:04');
-      for (tunnel in stateOnListenerOutputTunnels)
-        stateOnListenerOutputTunnels(tunnel).emit()
+      for (tunnel in onListenerTunnels)
+        onListenerTunnels[tunnel].emit()
     });
   }
 
@@ -61,8 +61,8 @@ module.exports = function (tv_name, monitor,
     turnOffInputTunnels[t].on(() => {
       console.log("entered turn off input tunnel");
       monitor.WriteRawMessage('tx 40:36');
-      for (tunnel in stateOnListenerOutputTunnels)
-        stateOffListenerOutputTunnels(tunnel).emit()
+      for (tunnel in offListenerTunnels)
+        offListenerTunnels[tunnel].emit()
     });
   }
 
@@ -70,8 +70,8 @@ module.exports = function (tv_name, monitor,
     switchSourceInputTunnels[t].on((source) => {
       console.log("entered source input tunnel");
       monitor.WriteRawMessage('tx 4F:82:' + source + '0:00');
-      for (tunnel in stateOnListenerOutputTunnels)
-        switchSourceListenerOutputTunnels(tunnel).emit(source)
+      for (tunnel in onListenerTunnels)
+        sourceListenerTunnels[tunnel].emit(source)
     });
   }
 }
