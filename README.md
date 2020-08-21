@@ -8,7 +8,7 @@ G.I.N.G.E.R. is a simple Node.js project so node is needed to use it.
 Also ```npm install``` should be executed in order to remain up to date with dependencies.
 
 ## Layout
-G.I.N.G.E.R. has a somewhat unusual directory layout this is because it's original concept was inspired by an actual dog named Ginger.
+G.I.N.G.E.R. has a somewhat unusual directory layout due to its original concept being inspired by an actual dog named Ginger.
 
 ### Attention
 Attention files are used to describe the behavior of the server-side system.
