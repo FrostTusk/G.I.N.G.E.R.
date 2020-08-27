@@ -8,7 +8,7 @@ module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   onListenerTunnels, offListenerTunnels, sourceListenerTunnels) {
 
-  if (false) {
+  if (true) {
       monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
       console.log(JSON.stringify(packet));
     });
@@ -21,8 +21,6 @@ module.exports = function (tv_name, monitor,
     } else {
       for (let i in offListenerTunnels)
         offListenerTunnels[i].emit();
-      for (let i in sourceListenerTunnels)
-        sourceListenerTunnels[i].emit(0);
     }
   });
 
@@ -34,8 +32,6 @@ module.exports = function (tv_name, monitor,
   monitor.on(CECMonitor.EVENTS.STANDBY, function(packet) {
     for (let i in offListenerTunnels)
       offListenerTunnels[i].emit();
-    for (let i in sourceListenerTunnels)
-      sourceListenerTunnels[i].emit(0);
   });
 
   monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, function(packet) {
