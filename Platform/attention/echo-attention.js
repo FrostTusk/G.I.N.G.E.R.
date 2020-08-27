@@ -8,8 +8,8 @@ const options = {
 
 const tv_name = 'taricha'
 const paths = [
-  {method: 'POST', path: '/api/states/input_select.' + tv_name},
-  {method: 'POST', path: '/api/states/input_boolean.' + tv_name}
+  {method: 'POST', path: '/api/services/counter/increment'},
+  {method: 'POST', path: '/api/states/input_boolean.amnirana_motion_detector'}
 ]
 
 for (i in paths) {
