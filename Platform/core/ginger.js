@@ -1,7 +1,7 @@
 const HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
 const HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
 const HDMICECTVTrick = require('../tricks/HDMI-CEC-TVTrick.js');
-
+const Filewatch = require('../tricks/Filewatch.js');
 const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 
 module.exports = class Ginger {
@@ -18,6 +18,10 @@ module.exports = class Ginger {
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
       stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels
     )
+  }
+
+  createFilewatchTrick(watch, outputTunnels, trickMood, recursive) {
+    Filewatch(watch, outputTunnels, trickMood, recursive);
   }
 
   // Load in create tunnel methods
