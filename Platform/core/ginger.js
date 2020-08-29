@@ -1,5 +1,6 @@
 const HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
 const HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
+const MyLogLogOutputTunnel = require('../obstacles/tunnels/MyLogLogOutputTunnel.js');
 const HDMICECTVTrick = require('../tricks/HDMI-CEC-TVTrick.js');
 const Filewatch = require('../tricks/Filewatch.js');
 const { CEC, CECMonitor } = require("@senzil/cec-monitor");
@@ -42,6 +43,11 @@ module.exports = class Ginger {
 
   createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood) {
     let tunnel = new HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood);
+    return tunnel;
+  }
+
+  createMyLogLogOutputTunnel(source) {
+    let tunnel = new MyLogLogOutputTunnel(source);
     return tunnel;
   }
 }
