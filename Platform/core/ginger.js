@@ -26,7 +26,7 @@ module.exports = class Ginger {
   }
 
   // Load in create tunnel methods
-  createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood) {
+  createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel) {
     // create express
     if (!this._httpServer) {
       let express = require('express');
@@ -36,7 +36,7 @@ module.exports = class Ginger {
     }
 
     let tunnel = new HTTPInputTunnel(this._httpServer, options, inputMood,
-      authenticationHurdle, authMood);
+      authenticationHurdle, authMood, logTunnel);
     this.tunnels.push(tunnel);
     return tunnel;
   }

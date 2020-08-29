@@ -12,8 +12,9 @@ const paths = [
   {method: 'POST', path: '/api/states/input_boolean.amnirana_motion_detector'}
 ]
 
+let tunnel = ginger.createMyLogLogOutputTunnel('Tester');
 for (i in paths) {
-  let echoTunnel = ginger.createHTTPInputTunnel(Object.assign(paths[i], options));
+  let echoTunnel = ginger.createHTTPInputTunnel(Object.assign(paths[i], options), undefined, undefined, undefined, tunnel);
   echoTunnel.on((data) => {
     console.log(data);
   })

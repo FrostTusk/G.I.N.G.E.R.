@@ -13,7 +13,8 @@ module.exports = class LogOutputTunnel extends OutputTunnel {
   }
 
   addTags(tags) {
-    for (tag in tags)
+    // Add option to only keep single copy of tags
+    for (let tag in tags)
       this._tags.push(tags[tag]);
   }
 };
