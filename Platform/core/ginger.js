@@ -1,6 +1,3 @@
-const HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
-const HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
-const MyLogLogOutputTunnel = require('../obstacles/tunnels/MyLogLogOutputTunnel.js');
 const { CEC, CECMonitor } = require('@senzil/cec-monitor');
 
 module.exports = class Ginger {
@@ -8,20 +5,20 @@ module.exports = class Ginger {
     if (log)
       this._logTunnel = this.createMyLogLogOutputTunnel('G.I.N.G.E.R.')
 
-    if (this._logTunnel) this._logTunnel.emit('initialized', ['core']);
+    if (this._logTunnel) this._logTunnel.emit('initialized', ['core', 'load']);
   }
 
   createHDMICECTVTrick(tv_name,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
     if (!this.HDMICECTVTrick) {
-      if (this._logTunnel) this._logTunnel.emit('loaded in HDMICECTVTrick', ['core', 'tricks']);
       this.HDMICECTVTrick = require('../tricks/HDMICECTVTrick.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in HDMICECTVTrick', ['core', 'tricks', 'load']);
     }
 
     let monitor = new CECMonitor('G.I.N.G.E.R.', {});
 
-    if (this._logTunnel) this._logTunnel.emit('created new HDMICECTVTrick', ['core', 'tricks']);
+    if (this._logTunnel) this._logTunnel.emit('created new HDMICECTVTrick', ['core', 'tricks', 'creation']);
     return this.HDMICECTVTrick(tv_name, monitor,
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
       stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels
@@ -30,37 +27,51 @@ module.exports = class Ginger {
 
   createFilewatchTrick(watch, outputTunnels, trickMood, recursive) {
     if (!this.Filewatch) {
-      if (this._logTunnel) this._logTunnel.emit('loaded in FilewatchTrick', ['core', 'tricks']);
       this.Filewatch = require('../tricks/Filewatch.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in FilewatchTrick', ['core', 'tricks', 'load']);
     }
-    if (this._logTunnel) this._logTunnel.emit('created new FilewatchTrick', ['core', 'tricks']);
+    if (this._logTunnel) this._logTunnel.emit('created new FilewatchTrick', ['core', 'tricks', 'creation']);
     return this.Filewatch(watch, outputTunnels, trickMood, recursive);
   }
 
   // Load in create tunnel methods
   createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel) {
     // create express
-    if (!this._httpServer) {
+    if (!this.HTTPInputTunnel) {
       let express = require('express');
       this._httpServer = express();
       this._httpServer.use(express.json());
       this._httpServer.listen(options.port, options.hostname);
+      if (this._logTunnel) this._logTunnel.emit('loaded in new http express server', ['core', 'obstacles', 'load']);
+
+      this.HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in HTTPInputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    let tunnel = new HTTPInputTunnel(this._httpServer, options, inputMood,
+    let tunnel = new this.HTTPInputTunnel(this._httpServer, options, inputMood,
       authenticationHurdle, authMood, logTunnel);
-    if (this._logTunnel) this._logTunnel.emit('created new HTTPInputTunnel', ['core', 'obstacles']);
+    if (this._logTunnel) this._logTunnel.emit('created new HTTPInputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
 
   createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood) {
-    let tunnel = new HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood);
+    if (!this.HTTPOutputTunnel) {
+      this.HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in HTTPOutputTunnel', ['core', 'obstacles', 'load']);
+    }
+
+    let tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPOutputTunnel', ['core', 'obstacles']);
     return tunnel;
   }
 
   createMyLogLogOutputTunnel(source) {
-    let tunnel = new MyLogLogOutputTunnel(source);
+    if (!this.MyLogLogOutputTunnel) {
+      this.MyLogLogOutputTunnel = require('../obstacles/tunnels/MyLogLogOutputTunnel.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in MyLogLogOutputTunnel', ['core', 'obstacles', 'load']);
+    }
+
+    let tunnel = new this.MyLogLogOutputTunnel(source);
     if (this._logTunnel) this._logTunnel.emit('created new MyLogLogOutputTunnel', ['core', 'obstacles']);
     return tunnel;
   }
