@@ -1,6 +1,7 @@
 //const nsfw = require('nsfw');
 const nw = require('node-watch');
 const fs = require('fs');
+const moment = require('moment');
 
 /*
 Input: need a list of files and directories to track.
@@ -16,6 +17,8 @@ Use Cases: 1) Camera Upload
 */
 module.exports = function(watch, outputTunnelList, trickMood, recursive, logTunnel) {
   if (logTunnel) logTunnel.addTags(['Filewatch'])
+
+  let lastTime = moment();
   let settings = {};
   try {
     if (fs.lstatSync(watch).isDirectory() && recursive)
@@ -26,13 +29,18 @@ module.exports = function(watch, outputTunnelList, trickMood, recursive, logTunn
   }
 
   nw(watch, settings, function(evt, name) {
+    if (lastTime.add(5, 'seconds').isAfter(moment()))
+      return;
+    
+    lastTime = moment();
     if (!trickMood)
-      trickMood = (evt, name) => {return {event: evt, name: name}}
+      trickMood = (evt, name) => {return {event: evt, name: name}};
+
+    if (logTunnel) logTunnel.emit('event: ' + evt + ' name: ' + name, ['tricks']);
 
     for (ot in outputTunnelList) {
       try {
           outputTunnelList[ot].emit(trickMood(evt, name));
-          if (logTunnel) logTunnel.emit('event: ' + evt + ' name: ' + name, ['tricks']);
       } catch (e) {
         if (e != 'skip')
           throw e;
