@@ -1,5 +1,5 @@
 const Ginger = require('../core/ginger.js');
-const ginger = new Ginger();
+const ginger = new Ginger(true);
 
 let tunnel = ginger.createMyLogLogOutputTunnel('Tester');
 tunnel.emit("test", ["test"]);

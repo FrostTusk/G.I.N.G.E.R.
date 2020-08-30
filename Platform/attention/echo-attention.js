@@ -1,5 +1,5 @@
 const Ginger = require('../core/ginger.js');
-const ginger = new Ginger();
+const ginger = new Ginger(true);
 
 const options = {
   hostname: '0.0.0.0',

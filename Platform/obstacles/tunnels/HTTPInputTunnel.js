@@ -19,17 +19,17 @@ module.exports = class HTTPInputTunnel extends InputTunnel {
           if (this._logTunnel)
             this._logTunnel.emit('received request', ['auth']);
           this._authenticationHurdle.guard(this._authMood(req, res));
-          if (this._logTunnel)
-            this._logTunnel.emit('authenticated request', ['auth']);
 
-          this._procedure(this._inputMood(req, res));
+          let data = this._inputMood(req, res);
+          if (this._logTunnel) this._logTunnel.emit('received request with data: ' + JSON.stringify(data));
+          this._procedure(data);
           res.sendStatus(200);
         }
       } else {
         inputFunction = (req, res) => {
-          if (this._logTunnel)
-            this._logTunnel.emit('received request');
-          this._procedure(this._inputMood(req, res));
+          let data = this._inputMood(req, res);
+          if (this._logTunnel) this._logTunnel.emit('received request with data: ' + JSON.stringify(data));
+          this._procedure(data);
           res.sendStatus(200);
         }
       }
