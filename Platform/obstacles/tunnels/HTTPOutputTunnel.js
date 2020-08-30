@@ -9,6 +9,7 @@ module.exports = class HTTPOutputTunnel extends OutputTunnel {
     this._authenticationHurdle = authenticationHurdle;
     this._authMood = (authMood) ? authMood: function() {};
     this._logTunnel = logTunnel;
+    if (logTunnel) logTunnel.addTags(['HTTPOuttputTunnel']);
   }
 
   emit(data) {
