@@ -7,6 +7,8 @@ const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 module.exports = function (tv_name, monitor,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
   onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
+  
+  logTunnel.addTags(['HDMI-CEC-TV']);
 
   if (false) {
       monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
