@@ -11,8 +11,7 @@ module.exports = class HTTPInputTunnel extends InputTunnel {
       this._authMood = (authMood) ? authMood: function() {};
       this._logTunnel = logTunnel;
 
-      if (logTunnel)
-        logTunnel.addTags(['HTTPInputTunnel']);
+      if (logTunnel) logTunnel.addTags(['HTTPInputTunnel']);
 
       let inputFunction;
       if (authenticationHurdle) {
