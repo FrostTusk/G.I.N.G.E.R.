@@ -25,13 +25,13 @@ module.exports = class Ginger {
     )
   }
 
-  createFilewatchTrick(watch, outputTunnels, trickMood, recursive) {
+  createFilewatchTrick(watch, outputTunnels, trickMood, recursive, logTunnel) {
     if (!this.Filewatch) {
       this.Filewatch = require('../tricks/Filewatch.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in FilewatchTrick', ['core', 'tricks', 'load']);
     }
     if (this._logTunnel) this._logTunnel.emit('created new FilewatchTrick', ['core', 'tricks', 'creation']);
-    return this.Filewatch(watch, outputTunnels, trickMood, recursive);
+    return this.Filewatch(watch, outputTunnels, trickMood, recursive, logTunnel);
   }
 
   // Load in create tunnel methods
@@ -61,7 +61,7 @@ module.exports = class Ginger {
     }
 
     let tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
-    if (this._logTunnel) this._logTunnel.emit('created new HTTPOutputTunnel', ['core', 'obstacles']);
+    if (this._logTunnel) this._logTunnel.emit('created new HTTPOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
 
@@ -72,7 +72,7 @@ module.exports = class Ginger {
     }
 
     let tunnel = new this.MyLogLogOutputTunnel(source);
-    if (this._logTunnel) this._logTunnel.emit('created new MyLogLogOutputTunnel', ['core', 'obstacles']);
+    if (this._logTunnel) this._logTunnel.emit('created new MyLogLogOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
 }

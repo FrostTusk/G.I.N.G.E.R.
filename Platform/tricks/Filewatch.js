@@ -14,14 +14,15 @@ Use Cases: 1) Camera Upload
               1) Log file changes -> send email eventually?
               2) Return appended line in general
 */
-module.exports = function(watch, outputTunnelList, trickMood, recursive) {
+module.exports = function(watch, outputTunnelList, trickMood, recursive, logTunnel) {
+  if (logTunnel) logTunnel.addTags(['Filewatch'])
   let settings = {};
   try {
     if (fs.lstatSync(watch).isDirectory() && recursive)
       settings.recursive = true;
   } catch (e) {
-    console.log(e);
-    return; // ?
+    if (logTunnel) logTunnel.emit('no such file or directory', ['tricks']);
+    return; // ? What if it's a different error?
   }
 
   nw(watch, settings, function(evt, name) {
@@ -31,10 +32,13 @@ module.exports = function(watch, outputTunnelList, trickMood, recursive) {
     for (ot in outputTunnelList) {
       try {
           outputTunnelList[ot].emit(trickMood(evt, name));
+          if (logTunnel) logTunnel.emit('event: ' + evt + ' name: ' + name, ['tricks']);
       } catch (e) {
         if (e != 'skip')
           throw e;
       }
     }
   });
+
+  if (logTunnel) logTunnel.emit('started listening for events on ' + watch, ['tricks']);
 }
