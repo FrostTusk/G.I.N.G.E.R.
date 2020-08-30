@@ -54,13 +54,13 @@ module.exports = class Ginger {
     return tunnel;
   }
 
-  createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood) {
+  createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel) {
     if (!this.HTTPOutputTunnel) {
       this.HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HTTPOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    let tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood);
+    let tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPOutputTunnel', ['core', 'obstacles']);
     return tunnel;
   }

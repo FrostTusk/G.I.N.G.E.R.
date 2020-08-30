@@ -3,6 +3,7 @@ const InputTunnel = require('./InputTunnel.js');
 module.exports = class HTTPInputTunnel extends InputTunnel {
     constructor(app, options, inputMood, authenticationHurdle, authMood, logTunnel) {
       super(app, options, authenticationHurdle, authMood, logTunnel);
+      this._options = options;
       this._procedure = function() {throw "procedure not specified"};
 
       this._inputMood = (inputMood) ? inputMood:
@@ -16,19 +17,18 @@ module.exports = class HTTPInputTunnel extends InputTunnel {
       let inputFunction;
       if (authenticationHurdle) {
         inputFunction = (req, res) => {
-          if (this._logTunnel)
-            this._logTunnel.emit('received request', ['auth']);
+          if (this._logTunnel) this._logTunnel.emit('received pre-authentication request', ['auth']);
           this._authenticationHurdle.guard(this._authMood(req, res));
 
           let data = this._inputMood(req, res);
-          if (this._logTunnel) this._logTunnel.emit('received request with data: ' + JSON.stringify(data));
+          if (this._logTunnel) this._logTunnel.emit('path: ' + this._options.path + ' data: ' + JSON.stringify(data));
           this._procedure(data);
           res.sendStatus(200);
         }
       } else {
         inputFunction = (req, res) => {
           let data = this._inputMood(req, res);
-          if (this._logTunnel) this._logTunnel.emit('received request with data: ' + JSON.stringify(data));
+          if (this._logTunnel) this._logTunnel.emit('path: ' + this._options.path + ' data: ' + JSON.stringify(data));
           this._procedure(data);
           res.sendStatus(200);
         }
