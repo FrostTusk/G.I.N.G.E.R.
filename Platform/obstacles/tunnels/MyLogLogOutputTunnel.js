@@ -31,7 +31,7 @@ module.exports = class MyLogLogOutputTunnel extends LogOutputTunnel {
     let timestamp = moment().format();
     let entry = timestamp + '; ';
     entry += this._source + '; ';
-    entry += data + ';';
+    entry += data + '; ';
 
     if ((!this._tags || this._tags.length == 0) &&
       (!tags || tags.length == 0)) {
