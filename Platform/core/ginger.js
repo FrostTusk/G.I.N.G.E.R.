@@ -10,9 +10,9 @@ module.exports = class Ginger {
 
   createHDMICECTVTrick(tv_name,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
-    stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels) {
+    stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel) {
     if (!this.HDMICECTVTrick) {
-      this.HDMICECTVTrick = require('../tricks/HDMICECTVTrick.js');
+      this.HDMICECTVTrick = require('../tricks/HDMI-CEC-TVTrick.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HDMICECTVTrick', ['core', 'tricks', 'load']);
     }
 
@@ -21,7 +21,7 @@ module.exports = class Ginger {
     if (this._logTunnel) this._logTunnel.emit('created new HDMICECTVTrick', ['core', 'tricks', 'creation']);
     return this.HDMICECTVTrick(tv_name, monitor,
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
-      stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels
+      stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel
     )
   }
 
