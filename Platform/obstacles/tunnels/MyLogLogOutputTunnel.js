@@ -30,21 +30,21 @@ module.exports = class MyLogLogOutputTunnel extends LogOutputTunnel {
   emit(data, tags) {
     let timestamp = moment().format();
     let entry = timestamp + '; ';
+    entry += this._source + '; ';
+    entry += data + ';';
 
     if ((!this._tags || this._tags.length == 0) &&
       (!tags || tags.length == 0)) {
-      entry += '[]; ';
+      entry += '[]';
     } else {
       let fullTags = (tags) ? tags.concat(this._tags): this._tags;
       entry += '[';
       for (let i = 0; i < fullTags.length - 1; i++) {
         entry += fullTags[i] + ', ';
       }
-      entry += fullTags[fullTags.length - 1] + ']; ';
+      entry += fullTags[fullTags.length - 1] + ']';
     }
 
-    entry += this._source + '; ';
-    entry += data;
     console.log(entry);
   }
 }
