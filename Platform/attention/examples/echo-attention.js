@@ -8,8 +8,8 @@ const options = {
 
 const tv_name = 'taricha'
 const paths = [
-  {method: 'POST', path: '/api/services/counter/increment'},
-  {method: 'POST', path: '/api/states/input_boolean.amnirana_motion_detector'}
+  {method: 'POST', path: '/echo'},
+  {method: 'GET', path: '/echo'}
 ]
 
 let tunnel = ginger.createMyLogLogOutputTunnel('Tester');
