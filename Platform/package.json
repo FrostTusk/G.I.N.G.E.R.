@@ -1,6 +1,6 @@
 {
   "name": "G.I.N.G.E.R.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Give Instruction Next Gain Exciting Result",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
   "license": "SEE LICENSE IN LICENSE file",
@@ -8,16 +8,11 @@
     "type": "git",
     "url": "https://github.com/FrostTusk/GINGER"
   },
-  "main": "attention.js",
-  "scripts": {
-    "start": "node attention.js"
-  },
+  "main": "core/ginger.js",
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "@senzil/cec-monitor": "^2.1.0",
-    "nsfw": "^2.0.0",
-    "node-watch": "^0.6.4",
-    "chokidar": "3.4.2"
+    "node-watch": "^0.6.4"
   }
 }

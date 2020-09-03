@@ -1,6 +1,10 @@
 const { CEC, CECMonitor } = require('@senzil/cec-monitor');
 
-module.exports = class Ginger {
+module.exports = function (log) {
+  return new Ginger(log);
+}
+
+class Ginger {
   constructor(log) {
     if (log)
       this._logTunnel = this.createMyLogLogOutputTunnel('G.I.N.G.E.R.')
