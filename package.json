@@ -1,12 +1,15 @@
 {
-  "name": "G.I.N.G.E.R.",
-  "version": "0.1.2",
+  "name": "@frosttusk/ginger",
+  "version": "0.1.3",
   "description": "Give Instruction Next Gain Exciting Result",
   "author": "Mathijs Hubrechtsen frosttusk@gmail.com",
   "license": "SEE LICENSE IN LICENSE file",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FrostTusk/GINGER"
+    "url": "https://github.com/FrostTusk/G.I.N.G.E.R."
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
   },
   "main": "core/ginger.js",
   "dependencies": {
