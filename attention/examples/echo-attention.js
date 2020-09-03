@@ -5,7 +5,6 @@ const options = {
   port: 8124,
 }
 
-const tv_name = 'taricha'
 const paths = [
   {method: 'POST', path: '/echo'},
   {method: 'GET', path: '/echo'}
