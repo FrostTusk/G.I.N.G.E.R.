@@ -1,6 +1,6 @@
 const ginger = require('../../core/ginger.js')(true);
 
-const tokens = require('./tokens.js');
+const tokens = require('./tokens-smtp.js');
 
 const options = {
   host: "smtp.zoho.com'",
