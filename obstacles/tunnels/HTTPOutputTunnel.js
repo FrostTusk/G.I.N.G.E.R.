@@ -5,7 +5,7 @@ module.exports = class HTTPOutputTunnel extends OutputTunnel {
   constructor(options, outputMood, authenticationHurdle, authMood, logTunnel) {
     super(options, outputMood, authenticationHurdle);
     this._options = options;
-    this._outputMood = outputMood;
+    this._outputMood = (outputMood) ? outputMood: function(data) {return data};
     this._authenticationHurdle = authenticationHurdle;
     this._authMood = (authMood) ? authMood: function() {};
     this._logTunnel = logTunnel;

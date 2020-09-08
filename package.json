@@ -9,13 +9,14 @@
     "url": "https://github.com/FrostTusk/G.I.N.G.E.R."
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   },
   "main": "core/ginger.js",
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "@senzil/cec-monitor": "^2.1.0",
-    "node-watch": "^0.6.4"
+    "node-watch": "^0.6.4",
+    "nodemailer": "^6.4.11"
   }
 }
