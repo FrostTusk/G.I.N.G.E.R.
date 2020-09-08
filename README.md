@@ -39,3 +39,10 @@ A seesaw is an abstraction of timer events. They allow for easily scheduling rec
 ### Tricks
 Tricks are the main pull factor of G.I.N.G.E.R. a trick typically takes other G.I.N.G.E.R. components as input, and then lets the system perform a sort of "trick".
 These can be something like using input to turn a TV on and off.
+
+## Workflows
+
+### Publishing
+1. Make Version on GitHub
+2. Publish directly to NPM
+3. Publish to GitHub
