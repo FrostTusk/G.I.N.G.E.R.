@@ -2,13 +2,16 @@ const nodemailer = require('nodemailer');
 const OutputTunnel = require('./OutputTunnel.js');
 
 module.exports = class SMTPOutputTunnel extends OutputTunnel {
-  constructor(options, outputMood, authenticationHurdle, authMood, logTunnel) {
-    super(options, outputMood, authenticationHurdle);
+  constructor(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject) {
+    super(options, outputMood, authenticationHurdle, from, to, subject);
     this._options = options;
     this._outputMood = (outputMood) ? outputMood: function(data) {return data};
     this._authenticationHurdle = authenticationHurdle;
     this._authMood = (authMood) ? authMood: function() {};
     this._logTunnel = logTunnel;
+    this._from = from;
+    this._to = to;
+    this._subject = subject;
     if (logTunnel) logTunnel.addTags(['SMTPOutputTunnel']);
   }
 
@@ -19,23 +22,17 @@ module.exports = class SMTPOutputTunnel extends OutputTunnel {
     }
 
     let finalData = this._outputMood(data);
-    //if (this._logTunnel) this._logTunnel.emit('path: ' + this._options.path + ' data: ' + JSON.stringify(finalData));
-
-    // let request = new http.ClientRequest(this._options);
-    // request.end(finalData);
-
     let transporter = nodemailer.createTransport(this._options);
 
     // send mail with defined transport object
     let info = transporter.sendMail({
-      from: '"Fred Foo 👻" <admin@hub.industries>', // sender address
-      to: "frosttusk@gmail.com", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-    }).then(success => console.log('success: ', success))
-      .catch(error => console.log('error: ', error));
+      from: this._from, // sender address
+      to: this._to, // list of receivers
+      subject: this._subject, // Subject line
+      html: finalData, // html body
+    }).then(success => this._logTunnel ? this._logTunnel.emit('Message success: ' + success.messageId):{})
+      .catch(error => this._logTunnel ? this._logTunnel.emit('Message error: ' + error.messageId):{});
 
-    if (this._logTunnel) this._logTunnel.emit("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    if (this._logTunnel) this._logTunnel.emit("Message sent");
   }
 };

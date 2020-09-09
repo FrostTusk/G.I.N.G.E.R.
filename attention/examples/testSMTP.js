@@ -13,5 +13,6 @@ const options = {
 let logTunnel = ginger.createMyLogLogOutputTunnel('Tester');
 
 let MailTunnel = require('../../obstacles/tunnels/SMTPTunnel.js');
-let mailTunnel = new MailTunnel(options, undefined, undefined, undefined, logTunnel);
-mailTunnel.emit();
+let mailTunnel = new MailTunnel(options, undefined, undefined, undefined, logTunnel,
+  '"Fred Foo 👻" <admin@hub.industries>', 'frosttusk@gmail.com', "DUHDUHDUHDUH");
+mailTunnel.emit("THIS ISAjkfdsajkfajkafb");
