@@ -12,9 +12,11 @@ class HTTPInputTunnel extends InputTunnel {
    */
 
    /**
-    * 
-    * @callback HTTPInputTunnel~~inputMood
-    *
+    * Mood that takes the HTTP input (req, res) and transforms it into data for the actual input tunnel procedure.
+    * @callback HTTPInputTunnel~~InputMood
+    * @param {Object} req - express incoming HTTP request
+    * @param {Object} res - express incoming HTTP result
+    * @returns {Object} Data object to be used in the actual input tunnel.
     */
 
     /**
@@ -22,7 +24,9 @@ class HTTPInputTunnel extends InputTunnel {
      * @todo refactor method
      * @constructor
      * @param {Object} app - Express server object
+     * @param {HTTPInputTunnel~InputMood} inputMood - stuff
      * @param {HTTPInputTunnel~HTTPConfig} options - Configuration for the HTTP protocol.
+     * @param {} authenticationHurdle
      * @param {}
      */
     constructor(app, options, inputMood, authenticationHurdle, authMood, logTunnel) {
