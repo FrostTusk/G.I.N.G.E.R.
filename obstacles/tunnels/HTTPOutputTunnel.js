@@ -12,18 +12,16 @@ class HTTPOutputTunnel extends OutputTunnel {
    */
 
   /**
-   * Mood that takes the HTTP input (req, res) and transforms it into data for the actual output tunnel procedure.
+   * Mood that takes the original to be outputted data and transforms it into data for the actual output tunnel procedure.
    * @callback HTTPOutputTunnel~~OutputMood
-   * @param {Object} req - express incoming HTTP request.
-   * @param {Object} res - express incoming HTTP result.
-   * @returns {Object} Data object to be used in the actual input tunnel.
+   * @param {Object} data - original data.
+   * @returns {Object} Data object to be used in the actual output tunnel.
    */
 
   /**
-   * Mood that takes the HTTP input (req, res) and transforms it into data for the authentication hurdle.
+   * Mood that takes the original to be outputted data and transforms it into data for the authentication hurdle.
    * @callback HTTPOutputTunnel~~AuthMood
-   * @param {Object} req - express incoming HTTP request.
-   * @param {Object} res - express incoming HTTP result.
+   * @param {Object} data - original data.
    * @returns {Object} Data object to be used by the authentication hurdle.
    */
 
