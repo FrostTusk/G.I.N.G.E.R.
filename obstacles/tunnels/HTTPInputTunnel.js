@@ -7,27 +7,36 @@ class HTTPInputTunnel extends InputTunnel {
   /**
    * @typedef HTTPInputTunnel~HTTPConfig
    * @type {object}
-   * @property {string} path - an ID.
-   * @property {string} method - your name.
+   * @property {string} path - The path that this tunnel will listen.
+   * @property {string} method - The kind of HTTP method that this tunnel will use.
    */
 
    /**
     * Mood that takes the HTTP input (req, res) and transforms it into data for the actual input tunnel procedure.
     * @callback HTTPInputTunnel~~InputMood
-    * @param {Object} req - express incoming HTTP request
-    * @param {Object} res - express incoming HTTP result
+    * @param {Object} req - express incoming HTTP request.
+    * @param {Object} res - express incoming HTTP result.
     * @returns {Object} Data object to be used in the actual input tunnel.
     */
 
     /**
+     * Mood that takes the HTTP input (req, res) and transforms it into data for the authentication hurdle.
+     * @callback HTTPInputTunnel~~AuthMood
+     * @param {Object} req - express incoming HTTP request.
+     * @param {Object} res - express incoming HTTP result.
+     * @returns {Object} Data object to be used by the authentication hurdle.
+     */
+
+    /**
      * Creates a new HTTPInputTunnel.
-     * @todo refactor method
+     * @todo refactor method, expand on authenticationHurdle
      * @constructor
-     * @param {Object} app - Express server object
-     * @param {HTTPInputTunnel~InputMood} inputMood - stuff
+     * @param {Object} app - Express server object.
+     * @param {HTTPInputTunnel~InputMood} inputMood - Mood that takes the HTTP input (req, res) and transforms it into data for the actual input tunnel procedure.
      * @param {HTTPInputTunnel~HTTPConfig} options - Configuration for the HTTP protocol.
-     * @param {} authenticationHurdle
-     * @param {}
+     * @param {Object} authenticationHurdle - Obstacle that authenticates every incoming request.
+     * @param {HTTPInputTunnel~AuthMood} authMood - Mood that takes the HTTP input (req, res) and transforms it into data for the authentication hurdle.
+     * @param {Object} logTunnel - The logTunnel to be used.
      */
     constructor(app, options, inputMood, authenticationHurdle, authMood, logTunnel) {
       super(app, options, authenticationHurdle, authMood, logTunnel);
