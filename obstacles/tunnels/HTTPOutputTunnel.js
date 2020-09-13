@@ -31,10 +31,10 @@ class HTTPOutputTunnel extends OutputTunnel {
    * Creates a new HTTPOutputTunnel.
    * @todo rename objects (logTunnel, authenticationHurdle)
    * @constructor
-   * @param {HTTPInputTunnel~HTTPConfig} options - Configuration for the HTTP protocol.
-   * @param {HTTPOutputTunnel~~OutputMood} outputMood - OutputMood to be used by the tunnel.
+   * @param {HTTPOutputunnel~HTTPConfig} options - Configuration for the HTTP protocol.
+   * @param {HTTPOutputTunnel~OutputMood} outputMood - OutputMood to be used by the tunnel.
    * @param {Object} authenticationHurdle - Obstacle that authenticates every outgoing request.
-   * @param {HTTPOutputTunnel~~AuthMood} AuthMood - to be used by the tunnel.
+   * @param {HTTPOutputTunnel~AuthMood} AuthMood - to be used by the tunnel.
    * @param {Object} logTunnel - The logTunnel to be used.
    */
   constructor(options, outputMood, authenticationHurdle, authMood, logTunnel) {

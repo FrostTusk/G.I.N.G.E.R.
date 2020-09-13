@@ -2,19 +2,29 @@ const http = require('http');
 const OutputTunnel = require('./OutputTunnel.js');
 
 /**
- * Define who is logging: specific trick, perhaps some "tags"
+ * Performs an output on a logging system.
  *
+ * @property {object} _tags - The added information which should be outputted onto the tunnel.
+ *                            Tags are used for sorting purposes.
  */
-module.exports = class LogOutputTunnel extends OutputTunnel {
+class LogOutputTunnel extends OutputTunnel {
+  /**
+   * Creates a new LogOutputTunnel.
+   * @constructor
+   */
   constructor(source) {
     super();
     this._source = source;
     this._tags = [];
   }
 
+  /**
+   * Adds new tags to be added with every log message sent on this logTunnel.
+   */
   addTags(tags) {
-    // Add option to only keep single copy of tags
     for (let tag in tags)
       this._tags.push(tags[tag]);
   }
 };
+
+module.exports = LogOutputTunnel;
