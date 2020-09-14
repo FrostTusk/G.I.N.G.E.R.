@@ -5,12 +5,12 @@ module.exports = function (log) {
 }
 
 /**
- *
+* Represents the core G.I.N.G.E.R. object. This object takes of managing and maintaining
+* the deployed G.I.N.G.E.R. instance.
  */
 class Ginger {
   /**
-   * Represents the core G.I.N.G.E.R. object. This object takes of managing and maintaining
-   * the deployed G.I.N.G.E.R. instance.
+   * Create a new G.I.N.G.E.R. instance
    * @constructor
    * @param {boolean} log - Signifies whether or not G.I.N.G.E.R.
    * should use it's own log tunnel for logging system information.
@@ -22,6 +22,10 @@ class Ginger {
     if (this._logTunnel) this._logTunnel.emit('initialized', ['core', 'load']);
   }
 
+  /**
+   * Creates a new HDMICECTVTrick and performs internal bookkkeeping.
+   * @see {@link HDMICECTVTrick}
+   */
   createHDMICECTVTrick(tv_name,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel) {
@@ -39,6 +43,10 @@ class Ginger {
     )
   }
 
+  /**
+   * Creates a new FilewatchTrick and performs internal bookkkeeping.
+   * @see {@link FilewatchTrick}
+   */
   createFilewatchTrick(watch, outputTunnels, trickMood, recursive, logTunnel) {
     if (!this.Filewatch) {
       this.Filewatch = require('../tricks/Filewatch.js');
@@ -48,7 +56,10 @@ class Ginger {
     return this.Filewatch(watch, outputTunnels, trickMood, recursive, logTunnel);
   }
 
-  // Load in create tunnel methods
+  /**
+   * Creates a new HTTPInputTunne and performs internal bookkkeeping.
+   * @see {@link HTTPInputTunne}
+   */
   createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel) {
     // create express NOTE: THIS IS WRONG, SHOULD IN FACT ONLY CHECK FOR INPUTTUNNELS ON THE RIGHT PORT
     if (!this.HTTPInputTunnel) {
@@ -68,6 +79,10 @@ class Ginger {
     return tunnel;
   }
 
+  /**
+   * Creates a new HTTPOutputTunnel and performs internal bookkkeeping.
+   * @see {@link HTTPOutputTunnel}
+   */
   createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel) {
     if (!this.HTTPOutputTunnel) {
       this.HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
@@ -79,6 +94,10 @@ class Ginger {
     return tunnel;
   }
 
+  /**
+   * Creates a new MyLogLogOutputTunnel and performs internal bookkkeeping.
+   * @see {@link MyLogLogOutputTunnel}
+   */
   createMyLogLogOutputTunnel(source) {
     if (!this.MyLogLogOutputTunnel) {
       this.MyLogLogOutputTunnel = require('../obstacles/tunnels/MyLogLogOutputTunnel.js');
@@ -90,6 +109,10 @@ class Ginger {
     return tunnel;
   }
 
+  /**
+   * Creates a new SMTPOutputTunnel and performs internal bookkkeeping.
+   * @see {@link SMTPOutputTunnel}
+   */
   createSMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject) {
     if (!this.SMTPOutputTunnel) {
       this.SMTPOutputTunnel = require('../obstacles/tunnels/SMTPOutputTunnel.js');
