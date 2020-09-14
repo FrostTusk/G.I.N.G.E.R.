@@ -50,7 +50,7 @@ class FilewatchTrick {
 
       if (logTunnel) logTunnel.emit('event: ' + evt + ' name: ' + name, ['tricks']);
 
-      for (ot in outputTunnelList) {
+      for (let ot in outputTunnelList) {
         try {
             outputTunnelList[ot].emit(trickMood(evt, name));
         } catch (e) {
