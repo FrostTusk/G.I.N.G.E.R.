@@ -37,7 +37,7 @@ class Ginger {
     let monitor = new CECMonitor('G.I.N.G.E.R.', {});
 
     if (this._logTunnel) this._logTunnel.emit('created new HDMICECTVTrick', ['core', 'tricks', 'creation']);
-    return this.HDMICECTVTrick(tv_name, monitor,
+    return new this.HDMICECTVTrick(monitor,
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
       stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel
     )
