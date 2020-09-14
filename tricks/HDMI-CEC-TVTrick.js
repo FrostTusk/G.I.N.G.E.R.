@@ -1,11 +1,22 @@
 const { CEC, CECMonitor } = require("@senzil/cec-monitor");
-/*
- * Tunnels
- * outputTunnelOn : emit will be called without data
- * outputTunnelSource : emit will be called with data=new_source
- */
 
+/**
+* An trick that allows for controlling an HDMI-CEC enabled TV.
+ */
 class HDMICECTrick {
+
+  /**
+   * Creates a new HDMICECTrick.
+   * @constructor
+   * @param {Object} monitor - A monitor for CEC networks, check package.json for more information.
+   * @param {InputTunnel[]} turnOnInputTunnels - Input tunnels which trigger when an on request is received.
+   * @param {InputTunnel[]} turnOffInputTunnels - Input tunnels which trigger when an on request is received.
+   * @param {InputTunnel[]} switchSourceInputTunnels - Input tunnels which trigger when a switch source request is received.
+   * @param {OutputTunnel[]} onListenerTunnels - Output tunnels which trigger when an on state change is detected.
+   * @param {OutputTunnel[]} offListenerTunnels - Output tunnels which trigger when an off state change is detected.
+   * @param {OutputTunnel[]} sourceListenerTunnels - Output tunnels which trigger when a change source state change is detected.
+   * @param {LogOutputTunnel} logTunnel - Specifc output tunnel for logging information.
+   */
   constructor(monitor,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
@@ -22,7 +33,6 @@ class HDMICECTrick {
       this._setUpListeners();
       this._setUpInput();
   }
-
 
   setUpLogging() {
     if (!this._logTunnel) return;
