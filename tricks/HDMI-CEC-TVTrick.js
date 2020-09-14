@@ -4,7 +4,7 @@ const { CEC, CECMonitor } = require("@senzil/cec-monitor");
 * An trick that allows for controlling an HDMI-CEC enabled TV.
  */
 class HDMICECTrick {
-
+  
   /**
    * Creates a new HDMICECTrick.
    * @constructor

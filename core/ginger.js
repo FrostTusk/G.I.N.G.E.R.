@@ -53,7 +53,7 @@ class Ginger {
       if (this._logTunnel) this._logTunnel.emit('loaded in FilewatchTrick', ['core', 'tricks', 'load']);
     }
     if (this._logTunnel) this._logTunnel.emit('created new FilewatchTrick', ['core', 'tricks', 'creation']);
-    return this.Filewatch(watch, outputTunnels, trickMood, recursive, logTunnel);
+    return new this.Filewatch(watch, outputTunnels, trickMood, recursive, logTunnel);
   }
 
   /**
