@@ -3,20 +3,25 @@ const nw = require('node-watch');
 const fs = require('fs');
 const moment = require('moment');
 
-/*
-Input: need a list of files and directories to track.
+/**
+  Watches for specific file upload/deletion/modification/etc. events in a directory.
 
-Output: triggers that are sent to home assistant -> HTTP output stream
-Use the Home Assistant API
-
-Use Cases: 1) Camera Upload
-           2) ftp server in general
-           3) Feeding into
-              1) Log file changes -> send email eventually?
-              2) Return appended line in general
+  Use Cases: 1) Camera Upload
+             2) ftp server in general
+             3) Feeding into
+                1) Log file changes -> send email eventually?
+                2) Return appended line in general
 */
-//module.exports = function(watch, outputTunnelList, trickMood, recursive, logTunnel) {
 class FilewatchTrick {
+  /**
+   * Mood that takes an event, watch combo and filters whether or not it should be returned
+   * and transforms the data into data to be read by the output tunnel.
+   * @callback FilewatchTrick~TrickMood
+   * @throws {string} "skip": this should be thrown when a specific event should be dropped.
+   * @param {string} event - What kind of event occured (e.g. "upload").
+   * @param {string} name - Name of the file on which an event occured.
+   * @returns {Object} Data object to be used in the actual output tunnel.
+   */
 
   /**
    * Creates a new FilewatchTrick.
