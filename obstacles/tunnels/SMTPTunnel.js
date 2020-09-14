@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const OutputTunnel = require('./OutputTunnel.js');
 
-module.exports = class SMTPOutputTunnel extends OutputTunnel {
+class SMTPOutputTunnel extends OutputTunnel {
   /**
    * Options as defined by nodemailer transport.
    * @typedef SMTPOutputTunnel~Options
@@ -73,3 +73,5 @@ module.exports = class SMTPOutputTunnel extends OutputTunnel {
     if (this._logTunnel) this._logTunnel.emit("Message sent");
   }
 };
+
+module.exports = SMTPOutputTunnel;

@@ -89,4 +89,15 @@ class Ginger {
     if (this._logTunnel) this._logTunnel.emit('created new MyLogLogOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
+
+  createSMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject) {
+    if (!this.SMTPOutputTunnel) {
+      this.SMTPOutputTunnel = require('../obstacles/tunnels/SMTPOutputTunnel.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in SMTPOutputTunnel', ['core', 'obstacles', 'load']);
+    }
+
+    let tunnel = new this.SMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject);
+    if (this._logTunnel) this._logTunnel.emit('created new SMTPOutputTunnel', ['core', 'obstacles', 'creation']);
+    return tunnel;
+  }
 }
