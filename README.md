@@ -1,6 +1,6 @@
 # G.I.N.G.E.R.
 G.I.N.G.E.R. == Give Instruction Next Gain Exciting Result<br/>
-G.I.N.G.E.R. is a Node.js IoT framework, it's intended as both a rapid prototyping framework as well as a framework that can be used in Home Automation contexts.
+G.I.N.G.E.R. is a polymorphic Node.js IoT framework, it's intended as both a rapid prototyping framework as well as a framework that can be used in Home Automation contexts.
 It enables developers to quickly write server-side IoT code and deploy it on a Node.js server.
 
 ## Installing and Running
