@@ -60,18 +60,20 @@ class Ginger {
    * Creates a new HTTPInputTunne and performs internal bookkkeeping.
    * @see {@link HTTPInputTunne}
    */
-  createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel) {
+  createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel, http_uses) {
     // create express NOTE: THIS IS WRONG, SHOULD IN FACT ONLY CHECK FOR INPUTTUNNELS ON THE RIGHT PORT
     if (!this.HTTPInputTunnel) {
       let express = require('express');
       this._httpServer = express();
-      this._httpServer.use(express.json());
       this._httpServer.listen(options.port, options.hostname);
       if (this._logTunnel) this._logTunnel.emit('loaded in new http express server', ['core', 'obstacles', 'load']);
 
       this.HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HTTPInputTunnel', ['core', 'obstacles', 'load']);
     }
+
+    for (let i in http_uses)
+      this._httpServer.use(http_uses[i]);
 
     let tunnel = new this.HTTPInputTunnel(this._httpServer, options, inputMood,
       authenticationHurdle, authMood, logTunnel);
@@ -113,13 +115,13 @@ class Ginger {
    * Creates a new SMTPOutputTunnel and performs internal bookkkeeping.
    * @see {@link SMTPOutputTunnel}
    */
-  createSMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject) {
+  createSMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from) {
     if (!this.SMTPOutputTunnel) {
       this.SMTPOutputTunnel = require('../obstacles/tunnels/SMTPOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in SMTPOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    let tunnel = new this.SMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from, to, subject);
+    let tunnel = new this.SMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from);
     if (this._logTunnel) this._logTunnel.emit('created new SMTPOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
