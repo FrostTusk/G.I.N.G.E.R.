@@ -34,7 +34,7 @@ class SMTPOutputTunnel extends OutputTunnel {
    * @param {string} from - Email to be sent from, this should the same as the email address defined in options.
    */
   constructor(options, outputMood, authenticationHurdle, authMood, logTunnel, from) {
-    super(options, outputMood, authenticationHurdle, from, to);
+    super(options, outputMood, authenticationHurdle, from);
     this._options = options;
     this._outputMood = (outputMood) ? outputMood: function(data) {return data};
     this._authenticationHurdle = authenticationHurdle;
