@@ -70,7 +70,7 @@ class Ginger {
 
     if (!this._httpServers[options.port]) {
       this._httpServers[options.port] = require('express')();
-      this._httpServer.listen(options.port, options.hostname);
+      this._httpServers[options.port].listen(options.port, options.hostname);
       if (this._logTunnel) this._logTunnel.emit('loaded in new http express server on port ' + options.port, ['core', 'obstacles', 'load']);
     }
 
