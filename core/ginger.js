@@ -7,6 +7,7 @@ module.exports = function (log) {
 /**
 * Represents the core G.I.N.G.E.R. object. This object takes of managing and maintaining
 * the deployed G.I.N.G.E.R. instance.
+* @property {object} _httpServers - A dictionary that maps ports onto HTTP Servers.
  */
 class Ginger {
   /**
@@ -61,21 +62,22 @@ class Ginger {
    * @see {@link HTTPInputTunne}
    */
   createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel, http_uses) {
-    // create express NOTE: THIS IS WRONG, SHOULD IN FACT ONLY CHECK FOR INPUTTUNNELS ON THE RIGHT PORT
     if (!this.HTTPInputTunnel) {
-      let express = require('express');
-      this._httpServer = express();
-      this._httpServer.listen(options.port, options.hostname);
-      if (this._logTunnel) this._logTunnel.emit('loaded in new http express server', ['core', 'obstacles', 'load']);
-
+      this._httpServers = {};
       this.HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HTTPInputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    for (let i in http_uses)
-      this._httpServer.use(http_uses[i]);
+    if (!this._httpServers[options.port]) {
+      this._httpServers[options.port] = require('express')();
+      this._httpServer.listen(options.port, options.hostname);
+      if (this._logTunnel) this._logTunnel.emit('loaded in new http express server on port ' + options.port, ['core', 'obstacles', 'load']);
+    }
 
-    let tunnel = new this.HTTPInputTunnel(this._httpServer, options, inputMood,
+    for (let i in http_uses)
+      this._httpServers[options.port].use(http_uses[i]);
+
+    let tunnel = new this.HTTPInputTunnel(this._httpServers[options.port], options, inputMood,
       authenticationHurdle, authMood, logTunnel);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPInputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
