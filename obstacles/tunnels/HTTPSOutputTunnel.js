@@ -1,26 +1,26 @@
-const http = require('http');
+const https = require('https');
 const OutputTunnel = require('./OutputTunnel.js');
 
 /**
  * An HTTPOutputTunnel that outputs data onto a specific HTTP Method/Path configuration.
  */
-class HTTPOutputTunnel extends OutputTunnel {
+class HTTPSOutputTunnel extends OutputTunnel {
   /**
    * Options as defined by express.
-   * @typedef HTTPOutputTunnel~HTTPConfig
+   * @typedef HTTPSOutputTunnel~HTTPConfig
    * @type {object}
    */
 
   /**
    * Mood that takes the original to be outputted data and transforms it into data for the actual output tunnel procedure.
-   * @callback HTTPOutputTunnel~~OutputMood
+   * @callback HTTPSOutputTunnel~~OutputMood
    * @param {Object} data - original data.
    * @returns {Object} Data object to be used in the actual output tunnel.
    */
 
   /**
    * Mood that takes the original to be outputted data and transforms it into data for the authentication hurdle.
-   * @callback HTTPOutputTunnel~~AuthMood
+   * @callback HTTPSOutputTunnel~~AuthMood
    * @param {Object} data - original data.
    * @returns {Object} Data object to be used by the authentication hurdle.
    */
@@ -29,10 +29,10 @@ class HTTPOutputTunnel extends OutputTunnel {
    * Creates a new HTTPOutputTunnel.
    * @todo rename objects (logTunnel, authenticationHurdle)
    * @constructor
-   * @param {HTTPOutputunnel~HTTPConfig} options - Configuration for the HTTP protocol.
-   * @param {HTTPOutputTunnel~OutputMood} outputMood - OutputMood to be used by the tunnel.
+   * @param {HTTPSOutputunnel~HTTPConfig} options - Configuration for the HTTPS protocol.
+   * @param {HTTPSOutputTunnel~OutputMood} outputMood - OutputMood to be used by the tunnel.
    * @param {Object} authenticationHurdle - Obstacle that authenticates every outgoing request.
-   * @param {HTTPOutputTunnel~AuthMood} AuthMood - to be used by the tunnel.
+   * @param {HTTPSOutputTunnel~AuthMood} AuthMood - to be used by the tunnel.
    * @param {Object} logTunnel - The logTunnel to be used.
    */
   constructor(options, outputMood, authenticationHurdle, authMood, logTunnel) {
@@ -46,7 +46,7 @@ class HTTPOutputTunnel extends OutputTunnel {
   }
 
   /**
-   * Forward given data onto the HTTP output channel.
+   * Forward given data onto the HTTPS output channel.
    * @param {Object} data - The actual data to be sent onto the channel.
    */
   emit(data) {
@@ -58,10 +58,10 @@ class HTTPOutputTunnel extends OutputTunnel {
     let finalData = this._outputMood(data);
     if (this._logTunnel) this._logTunnel.emit('path: ' + this._options.path + ' data: ' + JSON.stringify(finalData));
 
-    let request = new http.ClientRequest(this._options);
+    let request = new https.request(this._options);
     request.end(finalData);
     return request;
   }
 };
 
-module.exports = HTTPOutputTunnel;
+module.exports = HTTPSOutputTunnel;

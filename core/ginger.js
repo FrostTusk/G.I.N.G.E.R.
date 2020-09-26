@@ -99,6 +99,21 @@ class Ginger {
   }
 
   /**
+   * Creates a new HTTPSOutputTunnel and performs internal bookkkeeping.
+   * @see {@link HTTPSOutputTunnel}
+   */
+  createHTTPSOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel) {
+    if (!this.HTTPSOutputTunnel) {
+      this.HTTPSOutputTunnel = require('../obstacles/tunnels/HTTPSOutputTunnel.js');
+      if (this._logTunnel) this._logTunnel.emit('loaded in HTTPSOutputTunnel', ['core', 'obstacles', 'load']);
+    }
+
+    let tunnel = new this.HTTPSOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
+    if (this._logTunnel) this._logTunnel.emit('created new HTTPSOutputTunnel', ['core', 'obstacles', 'creation']);
+    return tunnel;
+  }
+
+  /**
    * Creates a new MyLogLogOutputTunnel and performs internal bookkkeeping.
    * @see {@link MyLogLogOutputTunnel}
    */
