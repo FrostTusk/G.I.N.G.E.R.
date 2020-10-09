@@ -1,4 +1,5 @@
 const { CEC, CECMonitor } = require('@senzil/cec-monitor');
+const Seesaws = require('../obstacles/seesaw');
 
 module.exports = function (log) {
   return new Ginger(log);
@@ -17,6 +18,8 @@ class Ginger {
    * should use it's own log tunnel for logging system information.
    */
   constructor(log) {
+    this.seesaws = Seesaws;
+
     if (log)
       this._logTunnel = this.createMyLogLogOutputTunnel('G.I.N.G.E.R.')
 
