@@ -42,22 +42,13 @@ class HDMICECTrick {
   constructor (monitor,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
-    this._monitor = monitor;
-
-    /**
-     * @property {module:obstacles/tunnels~InputTunnel[]} _turnOnInputTunnels
-     *    Input tunnels which trigger when an on request is received.
-     */
-    this._onListenerTunnels = onListenerTunnels;
-    this._offListenerTunnels = offListenerTunnels;
-    this._sourceListenerTunnels = sourceListenerTunnels;
-
     this.setUpLogging(monitor, logTunnel);
-    this._setUpListeners(monitor, logTunnel);
-    this._setUpInput(monitor, turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel);
+    this._setUpListeners(monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel);
+    this._setUpInput(monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels,
+      turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel);
   }
 
-  setUpLogging (logTunnel) {
+  setUpLogging (monitor, logTunnel) {
     if (!logTunnel) return;
 
     logTunnel.addTags(['HDMI-CEC-TV']);
@@ -69,51 +60,52 @@ class HDMICECTrick {
     // }
   }
 
-  _setUpListeners (monitor, logTunnel) {
+  _setUpListeners (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
     monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, (packet) => {
       if (logTunnel) logTunnel.emit('REPORT_POWER_STATUS: ' + packet.data.str, ['tricks']);
 
       if (packet.data.str === 'ON') {
-        this._onListenerTunnels.forEach(tunnel => tunnel.emit());
+        onListenerTunnels.forEach(tunnel => tunnel.emit());
       } else {
-        this._offListenerTunnels.forEach(tunnel => tunnel.emit());
-        this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
+        offListenerTunnels.forEach(tunnel => tunnel.emit());
+        sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
       }
     });
 
     monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, (packet) => {
       if (logTunnel) logTunnel.emit('IMAGE_VIEW_ON: (TV is ON)', ['tricks']);
 
-      this._onListenerTunnels.forEach(tunnel => tunnel.emit());
+      onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
     monitor.on(CECMonitor.EVENTS.STANDBY, (packet) => {
       if (logTunnel) logTunnel.emit('STANDBY: (TV is OFF)', ['tricks']);
 
-      this._offListenerTunnels.forEach(element => element.emit());
-      this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
+      offListenerTunnels.forEach(element => element.emit());
+      sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
     });
 
     monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, (packet) => {
       if (logTunnel) logTunnel.emit('ACTIVE_SOURCE: (TV is ON)', ['tricks']);
 
-      this._onListenerTunnels.forEach(tunnel => tunnel.emit());
+      onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
     monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, (packet) => {
       if (logTunnel) logTunnel.emit('REPORT_PHYSICAL_ADDRESS: source ' + packet.data.str[0], ['tricks']);
 
-      this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(packet.data.str[0]));
+      sourceListenerTunnels.forEach(tunnel => tunnel.emit(packet.data.str[0]));
     });
   }
 
-  _setUpInput (monitor, turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel) {
+  _setUpInput (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels,
+    turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel) {
     turnOnInputTunnels.forEach(inputTunnel => {
       inputTunnel.on(() => {
         if (logTunnel) logTunnel.emit('Turning TV on', ['tricks']);
         monitor.WaitForReady().then(() => monitor.WriteRawMessage('tx 40:04'));
 
-        this._onListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
+        onListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
       });
     });
 
@@ -122,7 +114,7 @@ class HDMICECTrick {
         if (logTunnel) logTunnel.emit('Turning TV off', ['tricks']);
         monitor.WaitForReady().then(() => monitor.WriteRawMessage('tx 40:36'));
 
-        this._offListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
+        offListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
       });
     });
 
@@ -131,7 +123,7 @@ class HDMICECTrick {
         if (logTunnel) logTunnel.emit('Switch TV source to ' + source, ['tricks']);
         monitor.WaitForReady().then(() => monitor.WriteRawMessage('tx 4F:82:' + source + '0:00'));
 
-        this._sourceListenerTunnels.forEach(outputTunnel => outputTunnel.emit(source));
+        sourceListenerTunnels.forEach(outputTunnel => outputTunnel.emit(source));
       });
     });
   }
