@@ -1,6 +1,6 @@
 # G.I.N.G.E.R.
 G.I.N.G.E.R. == Give Instruction Next Gain Exciting Result<br/>
-G.I.N.G.E.R. is a Node.js IoT framework, it's intended as both a rapid prototyping framework as well as a framework that can be used in Home Automation contexts.
+G.I.N.G.E.R. is a polymorphic Node.js IoT framework, it's intended as both a rapid prototyping framework as well as a framework that can be used in automation contexts.
 It enables developers to quickly write server-side IoT code and deploy it on a Node.js server.
 
 ## Installing and Running
@@ -8,7 +8,7 @@ G.I.N.G.E.R. is a simple Node.js project so node is needed to use it.
 Also ```npm install``` should be executed in order to remain up to date with dependencies.
 
 ## Layout
-G.I.N.G.E.R. has a somewhat unusual directory layout this is because it's original concept was inspired by an actual dog named Ginger.
+G.I.N.G.E.R. has a somewhat unusual directory layout due to its original concept being inspired by an actual dog named Ginger.
 
 ### Attention
 Attention files are used to describe the behavior of the server-side system.
@@ -39,3 +39,10 @@ A seesaw is an abstraction of timer events. They allow for easily scheduling rec
 ### Tricks
 Tricks are the main pull factor of G.I.N.G.E.R. a trick typically takes other G.I.N.G.E.R. components as input, and then lets the system perform a sort of "trick".
 These can be something like using input to turn a TV on and off.
+
+## Workflows
+
+### Publishing
+1. Make Version on GitHub
+2. Publish directly to NPM
+3. Publish to GitHub
