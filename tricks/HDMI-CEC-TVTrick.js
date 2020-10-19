@@ -41,7 +41,7 @@ class HDMICECTrick {
 
 module.exports = HDMICECTrick;
 
-_setUpLogging (monitor, logTunnel) {
+function _setUpLogging (monitor, logTunnel) {
   if (!logTunnel) return;
 
   logTunnel.addTags(['HDMI-CEC-TV']);
@@ -53,7 +53,7 @@ _setUpLogging (monitor, logTunnel) {
   // }
 }
 
-_setUpListeners (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
+function _setUpListeners (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
   monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, (packet) => {
     if (logTunnel) logTunnel.emit('REPORT_POWER_STATUS: ' + packet.data.str, ['tricks']);
 
@@ -91,7 +91,7 @@ _setUpListeners (monitor, onListenerTunnels, offListenerTunnels, sourceListenerT
   });
 }
 
-_setUpInput (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels,
+function _setUpInput (monitor, onListenerTunnels, offListenerTunnels, sourceListenerTunnels,
   turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel) {
   turnOnInputTunnels.forEach(inputTunnel => {
     inputTunnel.on(() => {
