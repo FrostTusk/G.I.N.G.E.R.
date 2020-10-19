@@ -1,10 +1,9 @@
-const { CEC, CECMonitor } = require("@senzil/cec-monitor");
+const { CECMonitor } = require('@senzil/cec-monitor');
 
 /**
 * An trick that allows for controlling an HDMI-CEC enabled TV.
  */
 class HDMICECTrick {
-  
   /**
    * Creates a new HDMICECTrick.
    * @constructor
@@ -17,110 +16,100 @@ class HDMICECTrick {
    * @param {OutputTunnel[]} sourceListenerTunnels - Output tunnels which trigger when a change source state change is detected.
    * @param {LogOutputTunnel} logTunnel - Specifc output tunnel for logging information.
    */
-  constructor(monitor,
+  constructor (monitor,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
-      this._monitor = monitor;
-      this._turnOnInputTunnels = turnOnInputTunnels;
-      this._turnOffInputTunnels = turnOffInputTunnels;
-      this._switchSourceInputTunnels = switchSourceInputTunnels;
-      this._onListenerTunnels = onListenerTunnels;
-      this._offListenerTunnels = offListenerTunnels;
-      this._sourceListenerTunnels = sourceListenerTunnels;
-      this._logTunnel = logTunnel;
+    this._monitor = monitor;
+    this._turnOnInputTunnels = turnOnInputTunnels;
+    this._turnOffInputTunnels = turnOffInputTunnels;
+    this._switchSourceInputTunnels = switchSourceInputTunnels;
+    this._onListenerTunnels = onListenerTunnels;
+    this._offListenerTunnels = offListenerTunnels;
+    this._sourceListenerTunnels = sourceListenerTunnels;
+    this._logTunnel = logTunnel;
 
-      this.setUpLogging();
-      this._setUpListeners();
-      this._setUpInput();
+    this.setUpLogging();
+    this._setUpListeners();
+    this._setUpInput();
   }
 
-  setUpLogging() {
+  setUpLogging () {
     if (!this._logTunnel) return;
 
     this._logTunnel.addTags(['HDMI-CEC-TV']);
 
-    if (false) {
-        this._monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
-        console.log(JSON.stringify(packet));
-      });
-    }
+    // if (false) {
+    //   this._monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
+    //     console.log(JSON.stringify(packet));
+    //   });
+    // }
   }
 
-
-  _setUpListeners() {
-    this._monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, function(packet) {
+  _setUpListeners () {
+    this._monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, (packet) => {
       if (this._logTunnel) this._logTunnel.emit('REPORT_POWER_STATUS: ' + packet.data.str, ['tricks']);
 
-      if (packet.data.str === "ON") {
-        for (let i in this._onListenerTunnels)
-          this._onListenerTunnels[i].emit();
+      if (packet.data.str === 'ON') {
+        this._onListenerTunnels.forEach(tunnel => tunnel.emit());
       } else {
-        for (let i in this._offListenerTunnels)
-          this._offListenerTunnels[i].emit();
-        for (let i in this._sourceListenerTunnels)
-          this._sourceListenerTunnels[i].emit(0);
+        this._offListenerTunnels.forEach(tunnel => tunnel.emit());
+        this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
       }
     });
 
-    this._monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, function(packet) {
+    this._monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, (packet) => {
       if (this._logTunnel) this._logTunnel.emit('IMAGE_VIEW_ON: (TV is ON)', ['tricks']);
 
-      for (let i in this._onListenerTunnels)
-        this._onListenerTunnels[i].emit();
+      this._onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
-    this._monitor.on(CECMonitor.EVENTS.STANDBY, function(packet) {
+    this._monitor.on(CECMonitor.EVENTS.STANDBY, (packet) => {
       if (this._logTunnel) this._logTunnel.emit('STANDBY: (TV is OFF)', ['tricks']);
 
-      for (let i in this._offListenerTunnels)
-        this._offListenerTunnels[i].emit();
-      for (let i in this._sourceListenerTunnels)
-        this._sourceListenerTunnels[i].emit(0);
+      this._offListenerTunnels.forEach(element => element.emit());
+      this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
     });
 
-    this._monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, function(packet) {
+    this._monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, (packet) => {
       if (this._logTunnel) this._logTunnel.emit('ACTIVE_SOURCE: (TV is ON)', ['tricks']);
 
-      for (let i in this._onListenerTunnels)
-        this._onListenerTunnels[i].emit();
+      this._onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
-    this._monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, function(packet) {
+    this._monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, (packet) => {
       if (this._logTunnel) this._logTunnel.emit('REPORT_PHYSICAL_ADDRESS: source ' + packet.data.str[0], ['tricks']);
 
-      for (let i in this._sourceListenerTunnels)
-        this._sourceListenerTunnels[i].emit(packet.data.str[0]);
+      this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(packet.data.str[0]));
     });
   }
 
-
-  _setUpInput() {
-    for (let t in this._turnOnInputTunnels) {
-      this._turnOnInputTunnels[t].on(() => {
+  _setUpInput () {
+    this._turnOnInputTunnels.forEach(inputTunnel => {
+      inputTunnel.on(() => {
         if (this._logTunnel) this._logTunnel.emit('Turning TV on', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:04'));
-        for (let tunnel in this._onListenerTunnels)
-          this._onListenerTunnels[tunnel].emit()
-      });
-    }
 
-    for (let t in this._turnOffInputTunnels) {
-      this._turnOffInputTunnels[t].on(() => {
+        this._onListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
+      });
+    });
+
+    this._turnOffInputTunnels.forEach(inputTunnel => {
+      inputTunnel.on(() => {
         if (this._logTunnel) this._logTunnel.emit('Turning TV off', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:36'));
-        for (let tunnel in this._offListenerTunnels)
-          this._offListenerTunnels[tunnel].emit()
-      });
-    }
 
-    for (let t in this._switchSourceInputTunnels) {
-      this._switchSourceInputTunnels[t].on((source) => {
+        this._offListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
+      });
+    });
+
+    this._switchSourceInputTunnels.forEach(inputTunnel => {
+      inputTunnel.on((source) => {
         if (this._logTunnel) this._logTunnel.emit('Switch TV source to ' + source, ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 4F:82:' + source + '0:00'));
-        for (let tunnel in this._sourceListenerTunnels)
-          this._sourceListenerTunnels[tunnel].emit(source)
+
+        this._sourceListenerTunnels.forEach(outputTunnel => outputTunnel.emit(source));
       });
-    }
+    });
   }
 }
 
