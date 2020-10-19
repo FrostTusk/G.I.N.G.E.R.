@@ -3,44 +3,55 @@ const { CECMonitor } = require('@senzil/cec-monitor');
 /**
  * An trick that allows for controlling an HDMI-CEC enabled TV.
  *
- * @see module:obstacles/tunnels/InputTunnel
+ * @module tricks/
  *
  * @property {object} _monitor A monitor for CEC networks, check package.json for more information.
- * @property {InputTunnel[]} _turnOnInputTunnels
+ * @property {module:obstacles/tunnels~InputTunnel[]} _turnOffInputTunnels
  *    Input tunnels which trigger when an on request is received.
- * @property {InputTunnel[]} _turnOffInputTunnels
- *    Input tunnels which trigger when an on request is received.
- * @property {InputTunnel[]} _switchSourceInputTunnels
+ * @property {module:obstacles/tunnels~InputTunnel[]} _switchSourceInputTunnels
  *    Input tunnels which trigger when a switch source request is received.
- * @property {OutputTunnel[]} _onListenerTunnels
+ * @property {module:obstacles/tunnels~OutputTunnel[]} _onListenerTunnels
  *    Output tunnels which trigger when an on state change is detected.
- * @property {OutputTunnel[]} _offListenerTunnels
+ * @property {module:obstacles/tunnels~OutputTunnel[]} _offListenerTunnels
  *    Output tunnels which trigger when an off state change is detected.
- * @property {OutputTunnel[]} _sourceListenerTunnel
+ * @property {module:obstacles/tunnels~OutputTunnel[]} _sourceListenerTunnels
  *    Output tunnels which trigger when a change source state change is detected.
- * @property {LogOutputTunnel} _logTunnel
+ * @property {module:obstacles/tunnels~LogOutputTunnel} _logTunnel
  *    Specific output tunnel for logging information.
  */
 class HDMICECTrick {
   /**
    * Creates a new HDMICECTrick.
    *
+   * @todo This needs to be moved to a parameter object.
+   *
    * @class
    *
-   * @todo This needs to be moved to a parameter object.
-   * @param {object} monitor - A monitor for CEC networks, check package.json for more information.
-   * @param {InputTunnel[]} turnOnInputTunnels - Input tunnels which trigger when an on request is received.
-   * @param {InputTunnel[]} turnOffInputTunnels - Input tunnels which trigger when an on request is received.
-   * @param {InputTunnel[]} switchSourceInputTunnels - Input tunnels which trigger when a switch source request is received.
-   * @param {OutputTunnel[]} onListenerTunnels - Output tunnels which trigger when an on state change is detected.
-   * @param {OutputTunnel[]} offListenerTunnels - Output tunnels which trigger when an off state change is detected.
-   * @param {OutputTunnel[]} sourceListenerTunnels - Output tunnels which trigger when a change source state change is detected.
-   * @param {LogOutputTunnel} logTunnel - Specific output tunnel for logging information.
+   * @param {object} monitor A monitor for CEC networks, check package.json for more information.
+   * @param {module:obstacles/tunnels~InputTunnel[]} turnOnInputTunnels
+   *    Input tunnels which trigger when an on request is received.
+   * @param {module:obstacles/tunnels~InputTunnel[]} turnOffInputTunnels
+   *    Input tunnels which trigger when an on request is received.
+   * @param {module:obstacles/tunnels~InputTunnel[]} switchSourceInputTunnels
+   *    Input tunnels which trigger when a switch source request is received.
+   * @param {module:obstacles/tunnels~OutputTunnel[]} onListenerTunnels
+   *    Output tunnels which trigger when an on state change is detected.
+   * @param {module:obstacles/tunnels~OutputTunnel[]} offListenerTunnels
+   *    Output tunnels which trigger when an off state change is detected.
+   * @param {module:obstacles/tunnels~OutputTunnel[]} sourceListenerTunnels
+   *    Output tunnels which trigger when a change source state change is detected.
+   * @param {module:obstacles/tunnels~LogOutputTunnel} logTunnel
+   *    Specific output tunnel for logging information.
    */
   constructor (monitor,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     onListenerTunnels, offListenerTunnels, sourceListenerTunnels, logTunnel) {
     this._monitor = monitor;
+
+    /**
+     * @property {module:obstacles/tunnels~InputTunnel[]} _turnOnInputTunnels
+     *    Input tunnels which trigger when an on request is received.
+     */
     this._turnOnInputTunnels = turnOnInputTunnels;
     this._turnOffInputTunnels = turnOffInputTunnels;
     this._switchSourceInputTunnels = switchSourceInputTunnels;

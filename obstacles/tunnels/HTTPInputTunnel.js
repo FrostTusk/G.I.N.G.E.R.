@@ -13,7 +13,9 @@ class HTTPInputTunnel extends InputTunnel {
 
   /**
    * Mood that takes the HTTP input (req, res) and transforms it into data for the actual input tunnel procedure.
-   * @callback HTTPInputTunnel~~InputMood
+   *
+   * @callback HTTPInputTunnel~InputMood
+   *
    * @param {Object} req - express incoming HTTP request.
    * @param {Object} res - express incoming HTTP result.
    * @returns {Object} Data object to be used in the actual input tunnel.
@@ -21,7 +23,9 @@ class HTTPInputTunnel extends InputTunnel {
 
   /**
    * Mood that takes the HTTP input (req, res) and transforms it into data for the authentication hurdle.
-   * @callback HTTPInputTunnel~~AuthMood
+   *
+   * @callback HTTPInputTunnel~AuthMood
+   *
    * @param {Object} req - express incoming HTTP request.
    * @param {Object} res - express incoming HTTP result.
    * @returns {Object} Data object to be used by the authentication hurdle.

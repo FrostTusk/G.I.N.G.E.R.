@@ -3,7 +3,7 @@
  * After creating the tunnel object, it is possible to register a procedure to be called anytime
  * the tunnel is triggered.
  *
- * @module obstacles/tunnels/InputTunnel
+ * @module obstacles/tunnels
  */
 class InputTunnel {
   /**

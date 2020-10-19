@@ -1,6 +1,8 @@
 /**
  * An OutputTunnel defines an outgoing communication channel on which a component can send data.
  * After creating the tunnel object, any component can use the tunnel to forward data to other side of the tunnel
+ *
+ * @module obstacles/tunnels
  */
 class OutputTunnel {
   /**

@@ -12,6 +12,6 @@
         "ecmaVersion": 12
     },
     "rules": {
-        "jsdoc/no-undefined-types": 0 // Too many false negatives.
+        "jsdoc/no-undefined-types": 1 // Too many false negatives.
     }
 }
