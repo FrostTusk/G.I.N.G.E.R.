@@ -52,16 +52,13 @@ class HDMICECTrick {
      * @property {module:obstacles/tunnels~InputTunnel[]} _turnOnInputTunnels
      *    Input tunnels which trigger when an on request is received.
      */
-    this._turnOnInputTunnels = turnOnInputTunnels;
-    this._turnOffInputTunnels = turnOffInputTunnels;
-    this._switchSourceInputTunnels = switchSourceInputTunnels;
     this._onListenerTunnels = onListenerTunnels;
     this._offListenerTunnels = offListenerTunnels;
     this._sourceListenerTunnels = sourceListenerTunnels;
 
     this.setUpLogging(logTunnel);
     this._setUpListeners(logTunnel);
-    this._setUpInput(logTunnel);
+    this._setUpInput(turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel);
   }
 
   setUpLogging (logTunnel) {
@@ -114,8 +111,8 @@ class HDMICECTrick {
     });
   }
 
-  _setUpInput (logTunnel) {
-    this._turnOnInputTunnels.forEach(inputTunnel => {
+  _setUpInput (turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels, logTunnel) {
+    turnOnInputTunnels.forEach(inputTunnel => {
       inputTunnel.on(() => {
         if (logTunnel) logTunnel.emit('Turning TV on', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:04'));
@@ -124,7 +121,7 @@ class HDMICECTrick {
       });
     });
 
-    this._turnOffInputTunnels.forEach(inputTunnel => {
+    turnOffInputTunnels.forEach(inputTunnel => {
       inputTunnel.on(() => {
         if (logTunnel) logTunnel.emit('Turning TV off', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:36'));
@@ -133,7 +130,7 @@ class HDMICECTrick {
       });
     });
 
-    this._switchSourceInputTunnels.forEach(inputTunnel => {
+    switchSourceInputTunnels.forEach(inputTunnel => {
       inputTunnel.on((source) => {
         if (logTunnel) logTunnel.emit('Switch TV source to ' + source, ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 4F:82:' + source + '0:00'));
