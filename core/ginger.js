@@ -1,8 +1,8 @@
-const { CECMonitor } = require('@senzil/cec-monitor');
+const { CEC, CECMonitor } = require('@senzil/cec-monitor');
 
 module.exports = function (log) {
   return new Ginger(log);
-};
+}
 
 /**
 * Represents the core G.I.N.G.E.R. object. This object takes of managing and maintaining
@@ -16,8 +16,10 @@ class Ginger {
    * @param {boolean} log - Signifies whether or not G.I.N.G.E.R.
    * should use it's own log tunnel for logging system information.
    */
-  constructor (log) {
-    if (log) this._logTunnel = this.createMyLogLogOutputTunnel('G.I.N.G.E.R.');
+  constructor(log) {
+    if (log)
+      this._logTunnel = this.createMyLogLogOutputTunnel('G.I.N.G.E.R.')
+
     if (this._logTunnel) this._logTunnel.emit('initialized', ['core', 'load']);
   }
 
@@ -25,27 +27,28 @@ class Ginger {
    * Creates a new HDMICECTVTrick and performs internal bookkkeeping.
    * @see {@link HDMICECTVTrick}
    */
-  createHDMICECTVTrick (turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
+  createHDMICECTVTrick(
+    turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
     stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel) {
     if (!this.HDMICECTVTrick) {
       this.HDMICECTVTrick = require('../tricks/HDMI-CEC-TVTrick.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HDMICECTVTrick', ['core', 'tricks', 'load']);
     }
 
-    const monitor = new CECMonitor('G.I.N.G.E.R.', {});
+    let monitor = new CECMonitor('G.I.N.G.E.R.', {});
 
     if (this._logTunnel) this._logTunnel.emit('created new HDMICECTVTrick', ['core', 'tricks', 'creation']);
     return new this.HDMICECTVTrick(monitor,
       turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,
       stateOnListenerOutputTunnels, stateOffListenerOutputTunnels, switchSourceListenerOutputTunnels, logTunnel
-    );
+    )
   }
 
   /**
    * Creates a new FilewatchTrick and performs internal bookkkeeping.
    * @see {@link FilewatchTrick}
    */
-  createFilewatchTrick (watch, outputTunnels, trickMood, recursive, logTunnel) {
+  createFilewatchTrick(watch, outputTunnels, trickMood, recursive, logTunnel) {
     if (!this.Filewatch) {
       this.Filewatch = require('../tricks/Filewatch.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in FilewatchTrick', ['core', 'tricks', 'load']);
@@ -58,7 +61,7 @@ class Ginger {
    * Creates a new HTTPInputTunne and performs internal bookkkeeping.
    * @see {@link HTTPInputTunne}
    */
-  createHTTPInputTunnel (options, inputMood, authenticationHurdle, authMood, logTunnel, httpUses) {
+  createHTTPInputTunnel(options, inputMood, authenticationHurdle, authMood, logTunnel, http_uses) {
     if (!this.HTTPInputTunnel) {
       this._httpServers = {};
       this.HTTPInputTunnel = require('../obstacles/tunnels/HTTPInputTunnel.js');
@@ -71,9 +74,10 @@ class Ginger {
       if (this._logTunnel) this._logTunnel.emit('loaded in new http express server on port ' + options.port, ['core', 'obstacles', 'load']);
     }
 
-    for (let i = 0; i++; httpUses.length) this._httpServers[options.port].use(httpUses[i]);
+    for (let i in http_uses)
+      this._httpServers[options.port].use(http_uses[i]);
 
-    const tunnel = new this.HTTPInputTunnel(this._httpServers[options.port], options, inputMood,
+    let tunnel = new this.HTTPInputTunnel(this._httpServers[options.port], options, inputMood,
       authenticationHurdle, authMood, logTunnel);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPInputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
@@ -83,13 +87,13 @@ class Ginger {
    * Creates a new HTTPOutputTunnel and performs internal bookkkeeping.
    * @see {@link HTTPOutputTunnel}
    */
-  createHTTPOutputTunnel (options, outputMood, authenticationHurdle, authMood, logTunnel) {
+  createHTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel) {
     if (!this.HTTPOutputTunnel) {
       this.HTTPOutputTunnel = require('../obstacles/tunnels/HTTPOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HTTPOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    const tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
+    let tunnel = new this.HTTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
@@ -98,13 +102,13 @@ class Ginger {
    * Creates a new HTTPSOutputTunnel and performs internal bookkkeeping.
    * @see {@link HTTPSOutputTunnel}
    */
-  createHTTPSOutputTunnel (options, outputMood, authenticationHurdle, authMood, logTunnel) {
+  createHTTPSOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel) {
     if (!this.HTTPSOutputTunnel) {
       this.HTTPSOutputTunnel = require('../obstacles/tunnels/HTTPSOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in HTTPSOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    const tunnel = new this.HTTPSOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
+    let tunnel = new this.HTTPSOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel);
     if (this._logTunnel) this._logTunnel.emit('created new HTTPSOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
@@ -113,13 +117,13 @@ class Ginger {
    * Creates a new MyLogLogOutputTunnel and performs internal bookkkeeping.
    * @see {@link MyLogLogOutputTunnel}
    */
-  createMyLogLogOutputTunnel (source) {
+  createMyLogLogOutputTunnel(source) {
     if (!this.MyLogLogOutputTunnel) {
       this.MyLogLogOutputTunnel = require('../obstacles/tunnels/MyLogLogOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in MyLogLogOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    const tunnel = new this.MyLogLogOutputTunnel(source);
+    let tunnel = new this.MyLogLogOutputTunnel(source);
     if (this._logTunnel) this._logTunnel.emit('created new MyLogLogOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
@@ -128,13 +132,13 @@ class Ginger {
    * Creates a new SMTPOutputTunnel and performs internal bookkkeeping.
    * @see {@link SMTPOutputTunnel}
    */
-  createSMTPOutputTunnel (options, outputMood, authenticationHurdle, authMood, logTunnel, from) {
+  createSMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from) {
     if (!this.SMTPOutputTunnel) {
       this.SMTPOutputTunnel = require('../obstacles/tunnels/SMTPOutputTunnel.js');
       if (this._logTunnel) this._logTunnel.emit('loaded in SMTPOutputTunnel', ['core', 'obstacles', 'load']);
     }
 
-    const tunnel = new this.SMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from);
+    let tunnel = new this.SMTPOutputTunnel(options, outputMood, authenticationHurdle, authMood, logTunnel, from);
     if (this._logTunnel) this._logTunnel.emit('created new SMTPOutputTunnel', ['core', 'obstacles', 'creation']);
     return tunnel;
   }
