@@ -58,17 +58,16 @@ class HDMICECTrick {
     this._onListenerTunnels = onListenerTunnels;
     this._offListenerTunnels = offListenerTunnels;
     this._sourceListenerTunnels = sourceListenerTunnels;
-    this._logTunnel = logTunnel;
 
-    this.setUpLogging();
-    this._setUpListeners();
-    this._setUpInput();
+    this.setUpLogging(logTunnel);
+    this._setUpListeners(logTunnel);
+    this._setUpInput(logTunnel);
   }
 
-  setUpLogging () {
-    if (!this._logTunnel) return;
+  setUpLogging (logTunnel) {
+    if (!logTunnel) return;
 
-    this._logTunnel.addTags(['HDMI-CEC-TV']);
+    logTunnel.addTags(['HDMI-CEC-TV']);
 
     // if (false) {
     //   this._monitor.on(CECMonitor.EVENTS._OPCODE, function(packet) {
@@ -77,9 +76,9 @@ class HDMICECTrick {
     // }
   }
 
-  _setUpListeners () {
+  _setUpListeners (logTunnel) {
     this._monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS, (packet) => {
-      if (this._logTunnel) this._logTunnel.emit('REPORT_POWER_STATUS: ' + packet.data.str, ['tricks']);
+      if (logTunnel) logTunnel.emit('REPORT_POWER_STATUS: ' + packet.data.str, ['tricks']);
 
       if (packet.data.str === 'ON') {
         this._onListenerTunnels.forEach(tunnel => tunnel.emit());
@@ -90,35 +89,35 @@ class HDMICECTrick {
     });
 
     this._monitor.on(CECMonitor.EVENTS.IMAGE_VIEW_ON, (packet) => {
-      if (this._logTunnel) this._logTunnel.emit('IMAGE_VIEW_ON: (TV is ON)', ['tricks']);
+      if (logTunnel) logTunnel.emit('IMAGE_VIEW_ON: (TV is ON)', ['tricks']);
 
       this._onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
     this._monitor.on(CECMonitor.EVENTS.STANDBY, (packet) => {
-      if (this._logTunnel) this._logTunnel.emit('STANDBY: (TV is OFF)', ['tricks']);
+      if (logTunnel) logTunnel.emit('STANDBY: (TV is OFF)', ['tricks']);
 
       this._offListenerTunnels.forEach(element => element.emit());
       this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(0));
     });
 
     this._monitor.on(CECMonitor.EVENTS.ACTIVE_SOURCE, (packet) => {
-      if (this._logTunnel) this._logTunnel.emit('ACTIVE_SOURCE: (TV is ON)', ['tricks']);
+      if (logTunnel) logTunnel.emit('ACTIVE_SOURCE: (TV is ON)', ['tricks']);
 
       this._onListenerTunnels.forEach(tunnel => tunnel.emit());
     });
 
     this._monitor.on(CECMonitor.EVENTS.REPORT_PHYSICAL_ADDRESS, (packet) => {
-      if (this._logTunnel) this._logTunnel.emit('REPORT_PHYSICAL_ADDRESS: source ' + packet.data.str[0], ['tricks']);
+      if (logTunnel) logTunnel.emit('REPORT_PHYSICAL_ADDRESS: source ' + packet.data.str[0], ['tricks']);
 
       this._sourceListenerTunnels.forEach(tunnel => tunnel.emit(packet.data.str[0]));
     });
   }
 
-  _setUpInput () {
+  _setUpInput (logTunnel) {
     this._turnOnInputTunnels.forEach(inputTunnel => {
       inputTunnel.on(() => {
-        if (this._logTunnel) this._logTunnel.emit('Turning TV on', ['tricks']);
+        if (logTunnel) logTunnel.emit('Turning TV on', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:04'));
 
         this._onListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
@@ -127,7 +126,7 @@ class HDMICECTrick {
 
     this._turnOffInputTunnels.forEach(inputTunnel => {
       inputTunnel.on(() => {
-        if (this._logTunnel) this._logTunnel.emit('Turning TV off', ['tricks']);
+        if (logTunnel) logTunnel.emit('Turning TV off', ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 40:36'));
 
         this._offListenerTunnels.forEach(outputTunnel => outputTunnel.emit());
@@ -136,7 +135,7 @@ class HDMICECTrick {
 
     this._switchSourceInputTunnels.forEach(inputTunnel => {
       inputTunnel.on((source) => {
-        if (this._logTunnel) this._logTunnel.emit('Switch TV source to ' + source, ['tricks']);
+        if (logTunnel) logTunnel.emit('Switch TV source to ' + source, ['tricks']);
         this._monitor.WaitForReady().then(() => this._monitor.WriteRawMessage('tx 4F:82:' + source + '0:00'));
 
         this._sourceListenerTunnels.forEach(outputTunnel => outputTunnel.emit(source));
