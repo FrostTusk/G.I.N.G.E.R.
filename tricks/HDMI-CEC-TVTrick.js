@@ -1,20 +1,41 @@
 const { CECMonitor } = require('@senzil/cec-monitor');
 
 /**
-* An trick that allows for controlling an HDMI-CEC enabled TV.
+ * An trick that allows for controlling an HDMI-CEC enabled TV.
+ *
+ * @see module:obstacles/tunnels/InputTunnel
+ *
+ * @property {object} _monitor A monitor for CEC networks, check package.json for more information.
+ * @property {InputTunnel[]} _turnOnInputTunnels
+ *    Input tunnels which trigger when an on request is received.
+ * @property {InputTunnel[]} _turnOffInputTunnels
+ *    Input tunnels which trigger when an on request is received.
+ * @property {InputTunnel[]} _switchSourceInputTunnels
+ *    Input tunnels which trigger when a switch source request is received.
+ * @property {OutputTunnel[]} _onListenerTunnels
+ *    Output tunnels which trigger when an on state change is detected.
+ * @property {OutputTunnel[]} _offListenerTunnels
+ *    Output tunnels which trigger when an off state change is detected.
+ * @property {OutputTunnel[]} _sourceListenerTunnel
+ *    Output tunnels which trigger when a change source state change is detected.
+ * @property {LogOutputTunnel} _logTunnel
+ *    Specific output tunnel for logging information.
  */
 class HDMICECTrick {
   /**
    * Creates a new HDMICECTrick.
-   * @constructor
-   * @param {Object} monitor - A monitor for CEC networks, check package.json for more information.
+   *
+   * @class
+   *
+   * @todo This needs to be moved to a parameter object.
+   * @param {object} monitor - A monitor for CEC networks, check package.json for more information.
    * @param {InputTunnel[]} turnOnInputTunnels - Input tunnels which trigger when an on request is received.
    * @param {InputTunnel[]} turnOffInputTunnels - Input tunnels which trigger when an on request is received.
    * @param {InputTunnel[]} switchSourceInputTunnels - Input tunnels which trigger when a switch source request is received.
    * @param {OutputTunnel[]} onListenerTunnels - Output tunnels which trigger when an on state change is detected.
    * @param {OutputTunnel[]} offListenerTunnels - Output tunnels which trigger when an off state change is detected.
    * @param {OutputTunnel[]} sourceListenerTunnels - Output tunnels which trigger when a change source state change is detected.
-   * @param {LogOutputTunnel} logTunnel - Specifc output tunnel for logging information.
+   * @param {LogOutputTunnel} logTunnel - Specific output tunnel for logging information.
    */
   constructor (monitor,
     turnOnInputTunnels, turnOffInputTunnels, switchSourceInputTunnels,

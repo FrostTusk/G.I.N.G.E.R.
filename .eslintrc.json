@@ -5,11 +5,13 @@
         "node": true
     },
     "extends": [
-        "semistandard"
+        "semistandard",
+	    "plugin:jsdoc/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 12
     },
     "rules": {
+        "jsdoc/no-undefined-types": 0 // Too many false negatives.
     }
 }
